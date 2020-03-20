@@ -1,3 +1,6 @@
+// Require IOTA Packages
+const Iota = require('@iota/core');
+
 //Import own important functions
 var functions = require('./functions');
 
@@ -11,7 +14,7 @@ const securityLevel = 2;
 
 //Defining the seed for which to generate an address (has to be 81 characters!)
 const seed = functions.random_seed(81);
-console.log("Your Seed is: " + seed);
+console.log("Your seed is: " + seed);
 
 //Getting the address from IOTA + Console output
 iota.getNewAddress(seed, { index: 0, securityLevel: securityLevel, total: 1 })
@@ -19,5 +22,5 @@ iota.getNewAddress(seed, { index: 0, securityLevel: securityLevel, total: 1 })
         console.log('Your address is: ' + address);
     })
     .catch(err => {
-        console.log(err)
+        console.log(err);
 });
