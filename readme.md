@@ -3,7 +3,8 @@
 
 This Repo is dedicated to gather some sample scripts for IOTA Implementations. There will be some scripts in the "examples" folder and hopefully a working ledger with a private tangle coming soon.
 
-To get it working, you need the latest `node.js` and all required packages. See the `package.json`-ile for details.
+To get it working, you need the latest `node.js` and all required packages. Go to the official [Node.js Download Page](https://nodejs.org/en/download/) to get it.
+For information on the required packages, see `package.json`.
 
 ## Example Scripts
 These Scripts are for testing and get to know IOTA.
