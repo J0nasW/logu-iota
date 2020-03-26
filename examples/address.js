@@ -6,7 +6,8 @@ var functions = require('./functions');
 
 //Connect to a Node in IOTA's DevNet
 const iota = Iota.composeAPI({
-    provider: 'https://nodes.devnet.iota.org:443'
+    //provider: 'https://nodes.devnet.iota.org:443'
+    provider: 'http:127.0.0.1:14265'
     });
 
 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
