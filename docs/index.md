@@ -1,18 +1,13 @@
-# Welcome to MkDocs
+# Welcome the LogU IOTA Project Documentations
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+This Documentation gives you an overview as well as detailled installation instructions to get an IOTA based temperature-controlled supply chain up and running.
 
-## Commands
+## The Idea
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+TBC
 
-## Project layout
+## In Development
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        concept_paper.md       # Concept Paper
-        prototype.md    # Development of the Prototype
+* Code on the Raspberry Pi
+* Documentation
+* Web-Client and Docker Environment

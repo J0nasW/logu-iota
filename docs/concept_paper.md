@@ -17,7 +17,7 @@ This Concept Paper outlines a way of implementing state of the art Blockchain Te
 ## IOTA and the Tangle
 IOTA was founded in 2016 by David Sønstebø, Sergey Ivancheglo, Dominik Schiener and Serguei Popov. It emerged as a digital payment system also known as cryptocurrency. IOTA focusses mainly on the internet of things (IoT) mainly because of its advantage of not having any transaction fees. Therefore, micropayments and simple transactions can be made onto the tangle (IOTA’s blockchain) with not having to pay someone to validate it. This is possible because of the tangle’s unique implementation: it uses directed acyclic graphs in order to store the information and validate it whereas blockchain is using concatenated lists. In order to participate in this network, a participant simply needs to perform a small amount of computational work that verifies two previous transactions. This makes IOTA ideal for our use-case because of its lean characteristics and focus on IoT devices. Our chosen hardware, a Raspberry Pi 4 comes with plenty of computational power in order to send sensor data onto the tangle.
 
-[Tangle]
+![Tangle]
 
 Moreover, without the need for monetary rewards, IOTA is not limited to transactional value settlements. It is possible to securely store information within Tangle transactions, or even spread larger amounts of information across multiple bundled or linked transactions.
 This structure also enables high scalability of transactions. The more activity in the Tangle, the faster transactions can be confirmed. 
@@ -25,7 +25,7 @@ This structure also enables high scalability of transactions. The more activity 
 For this implementation, we are going to use IOTA’s Masked Authenticated Messaging (MAM) System. It enables us to encrypt data and stream it directly on the Tangle with some lines of code in JavaScript. Other devices like a monitoring system can then subscribe to the data stream through channels.
 
 ## The Prototype & Implementation
-[Concept]
+![Concept]
 
 
 To start the process, a RaspberryPi will act as our edge-computing unit to gather and process temperature and humidity data from the DHT11 sensor. When this sensor data is collected, it is packed into a transaction and sent to our private IOTA Tangle. It gets a current time stamp and waits to be validated from other participants of our private tangle. The more sensor units participate, the faster the validation process will be. For testing purposes, the RaspberryPi will validate its own transactions.

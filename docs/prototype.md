@@ -19,7 +19,7 @@ To get the Raspberry Pi up and running, follow the steps.
 3. Let the Rasperry Pi boot up and activate SSL access in order to use PuTTY.
 4. Connect the DHT11 Sensor as shown in Figure 01.
 
-[DHT11_GPIO]
+![DHT11_GPIO]
 </br>Figure 01: Connection of DHT11 Sensor with RaspberryPi
 
 

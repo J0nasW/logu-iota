@@ -1,5 +1,5 @@
 # The Client Software
 
-Install this software 
+Install this software ...
 
 ## Prequisites:
