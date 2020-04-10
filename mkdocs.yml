@@ -4,6 +4,7 @@ nav:
     - Home: index.md
     - Concept Paper: concept_paper.md
     - User Guide:
+        - Examples: examples.md
         - Installation Prototype: prototype.md
         - Installation Client: client.md
     - About: about.md
