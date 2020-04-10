@@ -17,6 +17,7 @@ To get the Raspberry Pi up and running, follow the steps.
 1. Copy Noobs on the 32GB microSD Card.
 2. Select Raspbian Lite on the Pi and install it.
 3. Let the Rasperry Pi boot up and activate SSL access in order to use PuTTY.
+4. Run `sudo apt update`
 4. Connect the DHT11 Sensor as shown in Figure 01.
 
 ![DHT11_GPIO]
@@ -29,23 +30,28 @@ To get the Raspberry Pi up and running, follow the steps.
 | DATA          | PIN X - DATA      | 
 | VCC           | PIN X - VCC       | 
 
+5. Install NodeJS:</br>
+Run the command `curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -` to get the latest NodeJS Package.</br>
+Then run `sudo apt-get install -y nodejs` to install it.</br>
+Check your installed NodeJS version with `node -v`. If you get a valid version number, continue to Installation.
+
 # Installation
 
 In order to push sensor-data onto the tangle, you'll need some apps and dependencies.
 
 1. Get the connection between the DHT11 Sensor and the Raspberry Pi working:</br></br>
 Download the BCM2835 Library:</br>
-`wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.56.tar.gz`</br>
+`wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.63.tar.gz`</br>
 Build and install bcm2835-1.56:</br>
-Unzip the package: `tar zxvf bcm2835-1.56.tar.gz`</br>
-Go into the folder: `cd bcm2835-1.56`</br>
+Unzip the package: `tar zxvf bcm2835-1.63.tar.gz`</br>
+Go into the folder: `cd bcm2835-1.63`</br>
 Type: `./configure`</br>
 Type: `make`</br>
 Type: `sudo make check`</br>
 Type: `sudo make install`</br>
 
 2. Install Git on the Raspberry Pi:</br>
-Type: `sudo apt-get install git`
+Type: `sudo apt install git`
 
 3. Navigate to a suitable workplace (e.g. `\home\iota`).
 4. Use `git clone xxx` to get the IOTA Code.
