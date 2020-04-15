@@ -1,15 +1,16 @@
-[DHT11_GPIO]: \img\dht11_gpio.png
+[UC]: img/under-construction.jpg
+[DHT11_GPIO]: img\dht11_gpio.png
 
 # The Raspberry Pi Prototype
 
-Each Raspberry Pi can be installed on a temperature-controlled container in order to collect sensor data and alert the clients.
+The Raspberry Pi represents a edge-computing entity to collect sensor data and is capable of pushing data to the IOTA Tangle. Each Raspberry Pi can be installed inside a temperature-controlled container in order to collect sensor data and alert the clients.
 
 ## Prequisites:
 - Raspberry Pi 4  Model B (4GB RAM)
 - Raspberry Pi Official Power Brick
 - 32GB microSD Card
 - DHT11 Temperature & Humidity Sensor
-- Working WiFi Connection
+- Working Internet Connection
 
 # Getting Started
 
@@ -75,3 +76,4 @@ GitHub's Readme File.
 
 # Usage
 
+![UC]

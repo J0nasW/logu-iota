@@ -1,7 +1,7 @@
-[Tangle]: /img/Tangle.png
-[Concept]: /img/Figure_01.png
+[Tangle]: img/Tangle.png
+[Concept]: img/Figure_01.png
 
-# **Concept Paper:**</br></br>Risk minimization in temperature-controlled supply chains through IOTA Tangle technology
+# Risk minimization in temperature-controlled supply chains through IOTA Tangle technology
 
 ### Jonas Wilinski</br></br>
 
