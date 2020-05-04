@@ -15,8 +15,8 @@ More information:
 https://www.mobilefish.com/developer/iota/iota_quickguide_raspi_mam.html
 */
 
-const Mam = require('./lib/mam.client.js');
-const IOTA = require('iota.lib.js');
+const Mam = require('@iota/mam')
+const IOTA = require('@iota/core');
 const moment = require('moment');
 const iota = new IOTA({ provider: 'https://nodes.testnet.iota.org:443' });
 

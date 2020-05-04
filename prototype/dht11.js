@@ -1,7 +1,9 @@
 /*
 A Script by Jonas Wilinski working @ LogU TUHH.
 
-Run the following first:
+It reads the DHT11 Sensor data and gives an output on the console. Nothing more.
+
+Run the following first in order to get dht11 sensor data:
 
 wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz
 tar zxvf bcm2835-1.46.tar.gz
