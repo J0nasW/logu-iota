@@ -5,59 +5,34 @@ It just recieves data from the IOTA Devnet Tangle. Nothing more - just for testi
 
 */
 
-var Mam = require('@iota/mam')
-var IOTA = require('@iota/core');
-var iota = new IOTA({ provider: 'https://nodes.devnet.iota.org:443' })
+const Mam = require('@iota/mam')
+const { trytesToAscii } = require('@iota/converter')
+const provider = 'https://nodes.devnet.iota.org:443'; //Using the public tangle.
+//const provider = 'http:127.0.0.1:14265'; //For private tangles.
+const mamType = 'restricted' //Choose between public, private or restricted - NOTE: When using restricted, provide a Secret Key!
+const mamSecret = 'VERYSECRETKEY' //Secret Key for restricted MAM usage.
+const TIMEINTERVAL  = 10; // In seconds.
 
-let root = 'UNSQBFKGSC9RTAWRHAFFZEWUEBFKUOLERABCGJJEWAJCDLDNUWUFJNCNKCRPAZZNSIWZTZ9KTZWFFOZDT';
+var readlineSync = require('readline-sync');
+const chalk = require('chalk')
+
+var root = readlineSync.question('Please input root of msg tree: ')
 
 // Initialize MAM State - PUBLIC
-var mamState = Mam.init(iota)
+var mamState = Mam.init(provider)
 
-//if (!process.argv[2]) return console.log('No Address!')
+// Callback used to pass data out of the fetch
+const logData = data => console.log(trytesToAscii(data))
 
-/*
-const args = process.argv;
-if(args.length !=3) {
-    console.log('Missing root as argument: node mam_receive.js <root>');
-    process.exit();
-}
-*/
-
-const logData = data => console.log(JSON.parse(iota.utils.fromTrytes(data)))
-
-const recieveAll = async () => {
-
-    var resp = await Mam.fetch(root, 'public', null, logData)
-  console.log(resp)
-
+// Main Function
+const execute = async () => {
+  // Callback used to pass data + returns next_root
+  const resp = await Mam.fetch(root, mamType, mamSecret, logData)
+  console.log(chalk.yellow(JSON.parse(resp)))
+  root = resp.nextRoot
+  console.log(chalk.blue("list done, wait for next loop..."))
 }
 
-recieveAll()
-
-// const readMam = async root => {
-//   try {
-//     // Fetch a single tx
-//     const data = await Mam.fetchSingle(root, 'public')
-//     // Console long that Data
-//     showData(data.payload)
-//     // Set that as the latest address
-//     latestAddress = data.payload
-//     // Self invoke the function again
-//     readMam(data.nextRoot)
-//   } catch (e) {
-//     return console.log('Reached end of stream')
-//   }
-// }
-
-/*
-let active = false
-let latestAddress = process.argv[2]
-
-setInterval(async () => {
-  if (active) return
-  active = true
-  await readMam(latestAddress)
-  active = false
-}, 5000)
-*/
+//START
+console.log(chalk.blue("Start listening tree root: " + root + "..." ))
+setInterval(execute, TIMEINTERVAL*1000)
