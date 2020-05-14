@@ -3,6 +3,7 @@ repo_url: https://github.com/J0nasW/logu-iota
 nav:
     - Home: index.md
     - Concept Paper: concept_paper.md
+    - Thoughts: thoughts.md
     - User Guide:
         - Examples: examples.md
         - Installation Prototype: prototype.md
