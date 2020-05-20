@@ -22,7 +22,7 @@ This structure also enables high scalability of transactions. The more activity 
 For this implementation, we are going to use IOTA’s Masked Authenticated Messaging (MAM) System. It enables us to encrypt data and stream it directly on the Tangle with some lines of code in JavaScript. Other devices like a monitoring system can then subscribe to the data stream through channels.
 
 ## The Prototype & Implementation
-![Concept](img/Figure_01.png)
+![Concept](img/Figure_02.png)
 
 
 To start the process, a RaspberryPi will act as our edge-computing unit to gather and process temperature and humidity data from the DHT11 sensor. When this sensor data is collected, it is packed into a transaction and sent to our private IOTA Tangle. It gets a current time stamp and waits to be validated from other participants of our private tangle. The more sensor units participate, the faster the validation process will be. For testing purposes, the RaspberryPi will validate its own transactions.

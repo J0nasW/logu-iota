@@ -73,7 +73,9 @@ GitHub's Readme File.
 
 # Usage
 
-After launching the script, the RaspberryPi will output a valid Root on the console. Keep that Root in mind, as we need it later to fetch our temperature data.
-Additionally, a light web server is built up to access the pi without console access through HTTP Port 80.
+After launching the script, the RaspberryPi will output a valid Root on the console. Keep that Root in mind, as we need it later to fetch our temperature data.</br>
+Additionally, a light web server is built up to access the pi without console access through HTTP Port 80.</br>
+
+The raspberry pi will push temperature data from the DHT11 sensor right onto the tangle, referencing the Root address mentioned before. If you analyze the tangle, you can determine the current temperature easily with the online tool.
 
 ![UC](img/under-construction.jpg)
