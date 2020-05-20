@@ -1,6 +1,3 @@
-[UC]: img/under-construction.jpg
-[DHT11_GPIO]: img\dht11_gpio.png
-
 # The Raspberry Pi Prototype
 
 The Raspberry Pi represents a edge-computing entity to collect sensor data and is capable of pushing data to the IOTA Tangle. Each Raspberry Pi can be installed inside a temperature-controlled container in order to collect sensor data and alert the clients.
@@ -21,15 +18,15 @@ To get the Raspberry Pi up and running, follow the steps.
 4. Run `sudo apt update`
 4. Connect the DHT11 Sensor as shown in Figure 01.
 
-![DHT11_GPIO]
+![DHT11_GPIO](img/DHT11_GPIO.png)
 </br>Figure 01: Connection of DHT11 Sensor with RaspberryPi
 
 
 | DHT11 Sensor  | GPIO Raspberry Pi |
 | ------------- |-------------------| 
-| GND           | PIN X - GND       | 
-| DATA          | PIN X - DATA      | 
-| VCC           | PIN X - VCC       | 
+| GND           | PIN 6 - GND       | 
+| DATA          | PIN 7 - DATA      | 
+| VCC           | PIN 2 - VCC (5V)  | 
 
 5. Install NodeJS:</br>
 Run the command `curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -` to get the latest NodeJS Package.</br>
@@ -76,4 +73,7 @@ GitHub's Readme File.
 
 # Usage
 
-![UC]
+After launching the script, the RaspberryPi will output a valid Root on the console. Keep that Root in mind, as we need it later to fetch our temperature data.
+Additionally, a light web server is built up to access the pi without console access through HTTP Port 80.
+
+![UC](img/under-construction.jpg)

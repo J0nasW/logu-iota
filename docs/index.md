@@ -1,5 +1,3 @@
-[UC]: img/under-construction.jpg
-
 # Welcome the LogU IOTA Project Documentations
 
 Here you can find an overview of the Project as well as detailled installation instructions to get an IOTA based temperature-controlled supply chain up and running.
@@ -32,4 +30,4 @@ Please keep in mind, that we have started this project on February 2020 and are 
 * Code on the Raspberry Pi
 * Web-Client and Docker Environment
 
-![UC]
+![UC](img/under-construction.jpg)
