@@ -20,7 +20,9 @@ const TIMEINTERVAL  = 15; // In seconds.
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 // FUNCTIONS -----------------------------------------------------------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------,
+
+// Creates a new, random Seed for the initial Address of the sender.
 const random_seed = function (string_length){
     let random_string = '';
     let random_ascii;
@@ -33,6 +35,7 @@ const random_seed = function (string_length){
     return random_string
 }
 
+// Takes the generated Seed and requests a new Address from the IOTA Tangle
 const newAdress = function (addseed, addsecurityLevel) {
     // Generate a new Address from the IOTA Tangle
     iota.getNewAddress(addseed, { index: 0, securityLevel: addsecurityLevel, total: 1 })
@@ -44,6 +47,7 @@ const newAdress = function (addseed, addsecurityLevel) {
     });
 }
 
+// Creates a JSON-formatted Dataset with random numbers (later Sensor Data) and a timestamp.
 const generateJSON = function() {
     // Generate some random numbers simulating sensor data
     const data = Math.floor((Math.random()*89)+10);
