@@ -1,6 +1,3 @@
-[UC]: img/under-construction.jpg
-[DHT11_GPIO]: img\dht11_gpio.png
-
 # Some Thoughts regarding the LogU IOTA Implementation
 
 The LogU IOTA Implementation for analyzing Supply Chain Problems is driven by new developments in the IOTA World. Here are some thoughts and ToDo's to keep up with their pace of new technologies.

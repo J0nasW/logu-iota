@@ -35,5 +35,10 @@ On the technical perspective, it is as simple as a publisher / subscriber scenar
 ## Findings and Problems
 Currently, this prototype is being built. This section will be populated in the process of development.
 
+#### The Masked Authenticated Messaging (MAM) Protocoll
+At first, we tried to implement the information flow with IOTA's MAM Protocoll. As it provides encrypted message channels and a publish/subscribe method, it is very well suited for our task at hand. But after much experimentation and implementation, MAM turned out to be very unstable and it even broke down on simple JSON formatted datafields. Especially retrieving data from the tangle to work with was very hard and didn't work well.</br>
+To get it going, we therefore used Zero Value Transactions (ZVT) to write and read data to the tangle. This gives us the ability to also subscribe to a specific address and retrieve the temperature data. Moreover, it is validated on a higher level as it utilizes the standard IOTA transaction.</br>
+Simultaniously, we are gathering information on IOTA Streams, which is a new framework for information flows, ultimately replacing MAM in some time. As it is currently written in RUST and does not have a standard API, it cannot be used in this example.
+
 ## Conclusion
 TBC

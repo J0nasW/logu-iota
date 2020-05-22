@@ -25,9 +25,9 @@ The Prototype-folder contains the code, which can be deployed on a Raspberry Pi 
 
 ## In Development
 
-Please keep in mind, that we have started this project on February 2020 and are deeply in development of the core code.
+Please keep in mind, that we have started this project on February 2020 and are deeply in development of the core code. Currently we are working on:
 
-* Code on the Raspberry Pi
-* Web-Client and Docker Environment
+* Code on the Raspberry Pi with DHT11 Integration
+* Web-Client and Docker Environment for a Client Station
 
 ![UC](img/under-construction.jpg)
