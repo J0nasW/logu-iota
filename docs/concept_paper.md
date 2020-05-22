@@ -40,5 +40,10 @@ At first, we tried to implement the information flow with IOTA's MAM Protocoll. 
 To get it going, we therefore used Zero Value Transactions (ZVT) to write and read data to the tangle. This gives us the ability to also subscribe to a specific address and retrieve the temperature data. Moreover, it is validated on a higher level as it utilizes the standard IOTA transaction.</br>
 Simultaniously, we are gathering information on IOTA Streams, which is a new framework for information flows, ultimately replacing MAM in some time. As it is currently written in RUST and does not have a standard API, it cannot be used in this example.
 
+#### Web Service
+A new idea is to develop a simple but very useful web service. The Idea is, that a headless raspberry pi in a network starts broadcasting temperature data onto the tangle and will give some basic information about it's state and root address over a HTTP web page. 
+
+![WebService](img/Figure_03.png)
+
 ## Conclusion
 TBC
