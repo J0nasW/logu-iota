@@ -2,10 +2,18 @@
 // This is a simple IOTA Implementation of sending Zero Value Transactions to the Tangle containing some information.
 /////////////////////////////////////////////
 
-//Packages
+// IOTA Packages
 const Iota = require('@iota/core'); // Get IOTA Packages
 const Converter = require('@iota/converter'); // Get IOTA Converter
 const { asciiToTrytes } = require('@iota/converter') //IOTA Trytes Conversation
+
+// Web Server Packages
+var http = require('http');
+
+// DHT11 Packages
+var sensorLib = require("node-dht-sensor");
+
+// Other Packages
 const fsLibrary  = require('fs'); //Load File System Package
 const chalk = require('chalk'); // Nice Terminal Output
 const moment = require('moment'); //For Timestamp!
@@ -47,21 +55,36 @@ const newAdress = function (addseed, addsecurityLevel) {
     });
 }
 
+// Reading the DHT11 Sensor Results
+const DHTData = function() {
+  var sensorResult = sensorLib.read(22, 18);
+  return sensorResult;
+}
+
 // Creates a JSON-formatted Dataset with random numbers (later Sensor Data) and a timestamp.
 const generateJSON = function() {
     // Generate some random numbers simulating sensor data
-    const data = Math.floor((Math.random()*89)+10);
+    var sensorResult = DHTData();
+    const temperature = sensorResult.temperature.toFixed(1);
+    const humidity = sensorResult.humidity.toFixed(1);
     const dateTime = moment().utc().format('DD/MM/YYYY hh:mm:ss');
-    const json = {"data": data, "dateTime": dateTime};
+    const json = {"Temperature": temperature, "Humidity": humidity, "dateTime": dateTime};
     return json;
 }
+
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------------------
 
+// Configuring our HTTP server
+var server = http.createServer(function (request, response) {
+  response.writeHead(200, {"Content-Type": "text/plain"});
+  response.end("Hello World\n");
+});
+server.listen(8000);
+console.log("Server is running at http://127.0.0.1:8000/");
 
-
-// Connect to a node
+// Connect to a IOTA node
 const iota = Iota.composeAPI({
   provider: provider
 });
