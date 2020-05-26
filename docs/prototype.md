@@ -24,9 +24,9 @@ To get the Raspberry Pi up and running, follow the steps.
 
 | DHT11 Sensor  | GPIO Raspberry Pi |
 | ------------- |-------------------| 
-| GND           | PIN 6 - GND       | 
-| DATA          | PIN 7 - DATA      | 
-| VCC           | PIN 2 - VCC (5V)  | 
+| GND           | GND               | 
+| DATA          | GPIO 4 - DATA     | 
+| VCC           | VCC (5V)          | 
 
 5. Install NodeJS:</br>
 Run the command `curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -` to get the latest NodeJS Package.</br>
@@ -37,24 +37,12 @@ Check your installed NodeJS version with `node -v`. If you get a valid version n
 
 In order to push sensor-data onto the tangle, you'll need some apps and dependencies.
 
-1. Get the connection between the DHT11 Sensor and the Raspberry Pi working:</br></br>
-Download the BCM2835 Library:</br>
-`wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.63.tar.gz`</br>
-Build and install bcm2835-1.56:</br>
-Unzip the package: `tar zxvf bcm2835-1.63.tar.gz`</br>
-Go into the folder: `cd bcm2835-1.63`</br>
-Type: `./configure`</br>
-Type: `make`</br>
-Type: `sudo make check`</br>
-Type: `sudo make install`</br>
-
-2. Install Git on the Raspberry Pi:</br>
+1. Install Git on the Raspberry Pi:</br>
 Type: `sudo apt install git`
-
-3. Navigate to a suitable workplace (e.g. `\home\iota`).
-4. Use `git clone xxx` to get the IOTA Code.
-5. Navigate into `logu-iota\raspi_4`.
-6. Run `npm-install`. It will install all necessary dependencies and set up the environment.
+2. Navigate to a suitable workplace (e.g. `\home\iota`).
+3. Use `git clone xxx` to get the IOTA Code.
+4. Navigate into `logu-iota\raspi_4`.
+5. Run `npm-install`. It will install all necessary dependencies and set up the environment.
 
 # Contents
 

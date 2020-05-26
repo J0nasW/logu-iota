@@ -11,7 +11,7 @@ const { asciiToTrytes } = require('@iota/converter') //IOTA Trytes Conversation
 var http = require('http');
 
 // DHT11 Packages
-var sensorLib = require("node-dht-sensor");
+var sensor = require("node-dht-sensor");
 
 // Other Packages
 const fsLibrary  = require('fs'); //Load File System Package
@@ -57,7 +57,7 @@ const newAdress = function (addseed, addsecurityLevel) {
 
 // Reading the DHT11 Sensor Results
 const DHTData = function() {
-  var sensorResult = sensorLib.read(22, 18);
+  var sensorResult = sensor.read(11, 4);
   return sensorResult;
 }
 
@@ -95,36 +95,38 @@ const iota = Iota.composeAPI({
 // or 90 trytes with a valid checksum
 
 //Defining the seed for which to generate an address (has to be 81 characters!)
-//const seed = random_seed(81);
-const seed = 'JMAJVBLNFPGCXCTSEVENEYWFWTTGFWXMPNHKSSVJLXXRETXTFLPUHEQEYIIFHIFEDYTAPNREOHPHYDVBW';
+const seed = random_seed(81);
+//const seed = 'JMAJVBLNFPGCXCTSEVENEYWFWTTGFWXMPNHKSSVJLXXRETXTFLPUHEQEYIIFHIFEDYTAPNREOHPHYDVBW';
 console.log(chalk.yellow("Your Seed is: " + seed));
 
 //Getting the address
-//const address = newAdress(seed, securityLevel);
-const address = 'RLJMDVCJRFXKFMDJBWUJBYCLDF9PDU9OKRTBSBBTGIGTLWVBLNJFVBODPXUAPFQFSNGBFPPCKVNJGZCZC';
+const address = newAdress(seed, securityLevel);
+//const address = 'RLJMDVCJRFXKFMDJBWUJBYCLDF9PDU9OKRTBSBBTGIGTLWVBLNJFVBODPXUAPFQFSNGBFPPCKVNJGZCZC';
 console.log(chalk.yellow("Your Address is: " + address));
 
 
-// Define a message to send.
-// This message must include only ASCII characters.
-const json = JSON.stringify(generateJSON()); // Get a JSON Message
-//const json = JSON.stringify({"message": "Hello world"});
-const messageInTrytes = Converter.asciiToTrytes(json); // Convert the message to trytes
-console.log(chalk.yellow("Your JSON is: " + JSON.stringify(json)));
+// Publish to tangle
+const publish = async packet => {
+  // Define a message to send.
+  // This message must include only ASCII characters.
+  const json = JSON.stringify(generateJSON()); // Get a JSON Message
+  //const json = JSON.stringify({"message": "Hello world"});
+  const messageInTrytes = Converter.asciiToTrytes(json); // Convert the message to trytes
+  console.log(chalk.yellow("Your JSON is: " + JSON.stringify(json)));
 
-// Define a zero-value transaction object
-// that sends the message to the address
-const transfers = [
-  {
-    value: 0,
-    address: address,
-    message: messageInTrytes
-  }
-];
+  // Define a zero-value transaction object
+  // that sends the message to the address
+  const transfers = [
+    {
+      value: 0,
+      address: address,
+      message: messageInTrytes
+    }
+  ];
 
-// Create a bundle from the `transfers` array
-// and send the transaction to the node
-iota
+  // Create a bundle from the `transfers` array
+  // and send the transaction to the node
+  iota
   .prepareTransfers(seed, transfers)
   .then(trytes => {
     return iota.sendTrytes(trytes, depth, minWeight);
@@ -135,6 +137,6 @@ iota
   .catch(err => {
     console.error(err)
   });
+}
 
-
-
+setInterval(publish, TIMEINTERVAL*1000);
