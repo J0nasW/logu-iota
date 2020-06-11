@@ -78,14 +78,6 @@ const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitT
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------------------
 
-// Configuring our HTTP server
-var server = http.createServer(function (request, response) {
-  response.writeHead(200, {"Content-Type": "text/plain"});
-  response.end("Hello World\n");
-});
-server.listen(8000);
-console.log("Server is running at http://127.0.0.1:8000/");
-
 // Connect to a IOTA node
 const iota = Iota.composeAPI({
   provider: provider
@@ -108,8 +100,7 @@ let IOTAaddress = 0;
 iota.getNewAddress(seed, { index: 0, securityLevel: securityLevel, total: 1 })
     .then(address => {
         IOTAaddress= String(address);
-        console.log('Your address is: ' + address);
-        console.log(chalk.yellow("Your Address is: " + IOTAaddress));
+        console.log(chalk.yellow.bold("Your Address is: " + IOTAaddress));
     })
     .catch(err => {
         console.log(err)
@@ -117,7 +108,15 @@ iota.getNewAddress(seed, { index: 0, securityLevel: securityLevel, total: 1 })
   
 
 
-
+// Configuring the HTTP server
+var server = http.createServer(function (request, response) {
+  response.writeHead(200, {"Content-Type": "text/plain"});
+  response.end("LogU IOTA Supply Chain\n");
+  response.end("The used seed is: " + seed + "\n");
+  response.end("The used address is: " + IOTAaddress + "\n");
+});
+server.listen(8000);
+console.log("Server is running at http://127.0.0.1:8000/");
         
 
 // Publish to tangle
@@ -147,7 +146,7 @@ const publish = async packet => {
     return iota.sendTrytes(trytes, depth, minWeight);
   })
   .then(bundle => {
-    console.log(bundle[0].hash);
+    console.log(chalk.yellow("The Tail-Hash is: " + bundle[0].hash));
   })
   .catch(err => {
     console.error(err)
