@@ -23,7 +23,7 @@ const provider = 'https://nodes.thetangle.org:443' //Using the public DEVNET tan
 //const provider = 'http:127.0.0.1:14265'; //For private tangles.
 const depth = 3 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
 const securityLevel = 2 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
-const minWeight = 10 //Optional minimum number of trailing zeros in transaction hash. This is used by attachToTangle function to search for a valid nonce. Currently is 14 on mainnet & spamnnet and 9 on most other devnets. Null value will set minWeightMagnitude to 9
+const minWeight = 14 //Optional minimum number of trailing zeros in transaction hash. This is used by attachToTangle function to search for a valid nonce. Currently is 14 on mainnet & spamnnet and 9 on most other devnets. Null value will set minWeightMagnitude to 9
 const TIMEINTERVAL  = 15; // In seconds.
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
