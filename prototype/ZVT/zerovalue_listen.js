@@ -1,7 +1,7 @@
 const zmq = require('zeromq');
 var sock = zmq.socket('sub');
 
-sock.connect('tcp://zmq.comnet.thetangle.org:5556');
+sock.connect('tcp://zmq.nodes.thetangle.org:5556');
 
 // Check for a command-line argument
 if (!process.argv[2]) {

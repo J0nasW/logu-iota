@@ -19,7 +19,7 @@ const chalk = require('chalk'); // Nice Terminal Output
 const moment = require('moment'); //For Timestamp!
 
 // IOTA Variables
-const provider = 'https://nodes.comnet.thetangle.org:443' //Using the public DEVNET tangle.
+const provider = 'https://nodes.thetangle.org:443' //Using the public DEVNET tangle.
 //const provider = 'http:127.0.0.1:14265'; //For private tangles.
 const depth = 3 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
 const securityLevel = 2 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
@@ -126,7 +126,7 @@ const publish = async packet => {
   const json = JSON.stringify(generateJSON()); // Get a JSON Message
   //const json = JSON.stringify({"message": "Hello world"});
   const messageInTrytes = Converter.asciiToTrytes(json); // Convert the message to trytes
-  console.log(chalk.yellow("Your JSON is: " + JSON.stringify(json)));
+  console.log(chalk.white("Your JSON is: " + JSON.stringify(json)));
 
   // Define a zero-value transaction object
   // that sends the message to the address
@@ -146,7 +146,7 @@ const publish = async packet => {
     return iota.sendTrytes(trytes, depth, minWeight);
   })
   .then(bundle => {
-    console.log(chalk.yellow("The Tail-Hash is: " + bundle[0].hash));
+    console.log(chalk.yellow.bold("The Tail-Hash is: " + bundle[0].hash));
   })
   .catch(err => {
     console.error(err)
