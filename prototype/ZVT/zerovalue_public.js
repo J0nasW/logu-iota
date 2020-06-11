@@ -19,11 +19,11 @@ const chalk = require('chalk'); // Nice Terminal Output
 const moment = require('moment'); //For Timestamp!
 
 // IOTA Variables
-const provider = 'https://nodes.devnet.iota.org:443' //Using the public DEVNET tangle.
+const provider = 'https://nodes.comnet.thetangle.org:443' //Using the public DEVNET tangle.
 //const provider = 'http:127.0.0.1:14265'; //For private tangles.
 const depth = 3 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
 const securityLevel = 2 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
-const minWeight = 9 //Optional minimum number of trailing zeros in transaction hash. This is used by attachToTangle function to search for a valid nonce. Currently is 14 on mainnet & spamnnet and 9 on most other devnets. Null value will set minWeightMagnitude to 9
+const minWeight = 10 //Optional minimum number of trailing zeros in transaction hash. This is used by attachToTangle function to search for a valid nonce. Currently is 14 on mainnet & spamnnet and 9 on most other devnets. Null value will set minWeightMagnitude to 9
 const TIMEINTERVAL  = 15; // In seconds.
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
@@ -49,6 +49,7 @@ const newAdress = function (addseed, addsecurityLevel) {
     iota.getNewAddress(addseed, { index: 0, securityLevel: addsecurityLevel, total: 1 })
     .then(address => {
         console.log('Your address is: ' + address);
+        return String(address);
     })
     .catch(err => {
         console.log(err)
@@ -72,6 +73,7 @@ const generateJSON = function() {
     return json;
 }
 
+const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------------------
@@ -100,10 +102,23 @@ const seed = random_seed(81);
 console.log(chalk.yellow("Your Seed is: " + seed));
 
 //Getting the address
-const address = newAdress(seed, securityLevel);
+//const address = newAdress(seed, securityLevel);
 //const address = 'RLJMDVCJRFXKFMDJBWUJBYCLDF9PDU9OKRTBSBBTGIGTLWVBLNJFVBODPXUAPFQFSNGBFPPCKVNJGZCZC';
-console.log(chalk.yellow("Your Address is: " + address));
+let IOTAaddress = 0;
+iota.getNewAddress(seed, { index: 0, securityLevel: securityLevel, total: 1 })
+    .then(address => {
+        IOTAaddress= String(address);
+        console.log('Your address is: ' + address);
+        console.log(chalk.yellow("Your Address is: " + IOTAaddress));
+    })
+    .catch(err => {
+        console.log(err)
+    });
+  
 
+
+
+        
 
 // Publish to tangle
 const publish = async packet => {
@@ -119,7 +134,7 @@ const publish = async packet => {
   const transfers = [
     {
       value: 0,
-      address: address,
+      address: IOTAaddress,
       message: messageInTrytes
     }
   ];
