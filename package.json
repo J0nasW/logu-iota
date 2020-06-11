@@ -15,10 +15,11 @@
     "@iota/mam": "^0.5.0",
     "chalk": "^4.0.0",
     "moment": "^2.25.3",
-    "node-dht-sensor": "^0.4.2",
+    "node-dht-sensor": "0.4.2",
     "readline-sync": "^1.4.10",
     "request": "^2.88.2",
     "rust": "^0.1.6",
     "utf-8": "^2.0.0",
+    "zeromq": "^6.0.0-beta.6"
   }
 }

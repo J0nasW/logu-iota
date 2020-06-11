@@ -7,7 +7,7 @@ const moment = require('moment'); //For Timestamp!
 const functions = require('./functions'); //Import own functions
 
 // IOTA Variables
-const provider = 'https://nodes.devnet.iota.org:443' //Using the public DEVNET tangle.
+const provider = 'https://nodes.comnet.thetangle.org:443' //Using the public DEVNET tangle.
 //const provider = 'http:127.0.0.1:14265'; //For private tangles.
 const securityLevel = 2 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
 const minWeight = 9 //Optional minimum number of trailing zeros in transaction hash. This is used by attachToTangle function to search for a valid nonce. Currently is 14 on mainnet & spamnnet and 9 on most other devnets. Null value will set minWeightMagnitude to 9
