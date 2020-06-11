@@ -19,7 +19,7 @@ const chalk = require('chalk'); // Nice Terminal Output
 const moment = require('moment'); //For Timestamp!
 
 // IOTA Variables
-const provider = 'https://nodes.thetangle.org:443' //Using the public DEVNET tangle.
+const provider = 'https://nodes.comnet.thetangle.org:443' //Using the public DEVNET tangle.
 //const provider = 'http:127.0.0.1:14265'; //For private tangles.
 const depth = 3 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
 const securityLevel = 2 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
