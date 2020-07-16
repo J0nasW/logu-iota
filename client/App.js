@@ -46,6 +46,12 @@ function IotaGet (address) {
 
 export default function App() {
 
+  // OWN FUNCTIONS
+
+  handleReload() {
+    console.log('Click happened');
+  }
+
   // IOTA Things
   const iotaLibrary = require('@iota/core')
   const Converter = require('@iota/converter')
@@ -56,7 +62,6 @@ export default function App() {
 
   const address =
     'XSWFSZFGBNKLSJYVVSASFGVPRWIK9HY9ISQBTABPIWSBVDQRGZEZITFQOW9UZBZPJLCOAJOGSEBXCJCIC'
-
 
   //- REACT Charts ----------------------------------------------
   const data = React.useMemo(
@@ -138,7 +143,7 @@ export default function App() {
             <ListGroupItem>Timestamp: 2020-07-10 14:32</ListGroupItem>
           </ListGroup>
           <Card.Body>
-            <Button onclick="IotaGet()">Reload</Button>
+            <Button onClick={this.handleReload.bind(this)}>Reload</Button>
           </Card.Body>
         </Card>
 
