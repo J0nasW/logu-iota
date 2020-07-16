@@ -44,13 +44,15 @@ function IotaGet (address) {
   })
 }
 
+function handleReload() {
+  console.log('Click happened');
+}
+
 export default function App() {
 
   // OWN FUNCTIONS
 
-  handleReload() {
-    console.log('Click happened');
-  }
+  
 
   // IOTA Things
   const iotaLibrary = require('@iota/core')
