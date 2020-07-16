@@ -40,30 +40,12 @@ In order to push sensor-data onto the tangle, you'll need some apps and dependen
 1. Install Git on the Raspberry Pi:</br>
 Type: `sudo apt install git`
 2. Navigate to a suitable workplace (e.g. `\home\iota`).
-3. Use `git clone xxx` to get the IOTA Code.
-4. Navigate into `logu-iota\raspi_4`.
+3. Use `git clone https://github.com/J0nasW/logu-iota.git` to get the IOTA Code.
+4. Navigate into `logu-iota\prototype`.
 5. Run `npm-install`. It will install all necessary dependencies and set up the environment.
-
-# Contents
-
-The Github Repository consists of the following files:
-
-- Folder: **client**</br>
-All necessary scripts with an docker-image for the web-based client.
-- Folder: **docs**</br>
-Holds every documentation-file.
-- Folder: **examples**</br>
-Some basic JS-Files demonstrating the usage of IOTA's libraries.
-- Folder: **raspi_4**</br>
-All necessary scripts for the Raspberry Pi Prototype.
-- File: **readme.md**</br>
-GitHub's Readme File.
 
 # Usage
 
-After launching the script, the RaspberryPi will output a valid Root on the console. Keep that Root in mind, as we need it later to fetch our temperature data.</br>
-Additionally, a light web server is built up to access the pi without console access through HTTP Port 80.</br>
+After launching the script, the RaspberryPi will open up a simple Web server which you can access using the raspi's IP Address. After setting up all variables, it will output a valid IOTA Address with accompanying Seed on the Web Server and console. Keep that Root in mind, as we need it later to fetch our temperature data.</br>
 
-The raspberry pi will push temperature data from the DHT11 sensor right onto the tangle, referencing the Root address mentioned before. If you analyze the tangle, you can determine the current temperature easily with the online tool.
-
-![UC](img/under-construction.jpg)
+The RaspberryPi will push temperature and humidity data as well as a current timestamp from the DHT11 sensor right onto the tangle, referencing the Root address mentioned before. If you analyze the tangle, you can determine the current temperature easily with the online tool. If you are pushing data onto the IOTA Comnet (or Testnet), you can validate the process using the [TangleExplorer](https://comnet.thetangle.org/) and the generated address.

@@ -16,18 +16,18 @@ This Project outlines a sample implementation for a temperature-controlled cold 
 
 The GitHub Repository consists of several files and folders:
 
-* client (Folder)</br>
-Here you can find most of the client code. The client is dockerized, so that the installation is as easy as possible and all necessary dependencies will be installed automatically. Please refer to the "Client"-Section of this documentation for more details.
-* examples (Folder)</br>
-This folder contains some example scripts (JS) to test and verify IOTA code. With these scripts, you can generate addresses in the IOTA devnet, make test-transactions and even use the MAM-Service, on which this project is built upon.
-* prototype (Folder)</br>
-The Prototype-folder contains the code, which can be deployed on a Raspberry Pi in order to collect and send sensor data to the IOTA Tangle. Please refer to the "Prototype"-Section of this documentation for more details.
+* **The Client**</br>
+Here you can find most of the client code. The client is written in [React Native](https://reactnative.dev/) and can be deployed using [Expo](https://expo.io/). Please refer to the [Client-Section](./client.md) of this documentation for more details.
+* **The Prototype**</br>
+The Prototype-folder contains the code, which can be deployed on a Raspberry Pi in order to collect and send sensor data to the IOTA Tangle. Please refer to the [Prototype-Section](./prototype.md) of this documentation for more details.
+* **Some Examples**</br>
+This folder contains some example scripts (Node JS) to test and verify IOTA code. With these scripts, you can generate addresses in the IOTA devnet, make test-transactions and even use the MAM-Service.
+
 
 ## In Development
 
 Please keep in mind, that we have started this project on February 2020 and are deeply in development of the core code. Currently we are working on:
 
-* Code on the Raspberry Pi with DHT11 Integration
-* Web-Client and Docker Environment for a Client Station
-
-![UC](img/under-construction.jpg)
+* :white_check_mark: RaspberryPi DHT11 NodeJS integration to get temperature and humidity data
+* :white_check_mark: Code on the Raspberry Pi with DHT11 Integration
+* :hourglass_flowing_sand: React Web-Client and Apps

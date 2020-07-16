@@ -2,7 +2,11 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+// For the Header Menu
 import { Button, Nav, Navbar, Form, FormControl, Card, ListGroup, ListGroupItem } from 'react-bootstrap';
+
+// For Temperature and Humidity Charts
+import { Chart } from 'react-charts'
 
 //import Button from 'react-bootstrap/Button';
 //import Nav from 'react-bootstrap/Nav';
@@ -11,17 +15,8 @@ import { Button, Nav, Navbar, Form, FormControl, Card, ListGroup, ListGroupItem 
 //import FormControl from 'react-bootstrap/FormControl';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { anchorClosest, alignAuto } from 'react-charts/dist/react-charts.development';
 
-
-const iotaLibrary = require('@iota/core')
-const Converter = require('@iota/converter')
-
-const iota = iotaLibrary.composeAPI({
-  provider: 'https://nodes.comnet.thetangle.org:443'
-})
-
-const address =
-  'XSWFSZFGBNKLSJYVVSASFGVPRWIK9HY9ISQBTABPIWSBVDQRGZEZITFQOW9UZBZPJLCOAJOGSEBXCJCIC'
 
 function IotaGet (address) {
   iota
@@ -50,6 +45,67 @@ function IotaGet (address) {
 }
 
 export default function App() {
+
+  // IOTA Things
+  const iotaLibrary = require('@iota/core')
+  const Converter = require('@iota/converter')
+
+  const iota = iotaLibrary.composeAPI({
+    provider: 'https://nodes.comnet.thetangle.org:443'
+  })
+
+  const address =
+    'XSWFSZFGBNKLSJYVVSASFGVPRWIK9HY9ISQBTABPIWSBVDQRGZEZITFQOW9UZBZPJLCOAJOGSEBXCJCIC'
+
+
+  //- REACT Charts ----------------------------------------------
+  const data = React.useMemo(
+    () => [
+      {
+        label: 'Temperature',
+        data: [
+          [0, 1],
+          [1, 2],
+          [2, 4],
+          [3, 2],
+          [4, 7],
+        ],
+      },
+      {
+        label: 'Humidity',
+        data: [
+          [0, 3],
+          [1, 1],
+          [2, 5],
+          [3, 6],
+          [4, 4],
+        ],
+      },
+    ],
+    []
+  )
+
+  const tooltipAlign = alignAuto;
+  const tooltipAnchor = anchorClosest
+
+  const axes = React.useMemo(
+    () => [
+      { primary: true, position: 'bottom', type: 'time' },
+      { position: 'left', type: 'linear' }
+    ],
+    []
+  )
+
+  const tooltip = React.useMemo(
+    () => ({
+      align: tooltipAlign,
+      anchor: tooltipAnchor
+    }),
+    [tooltipAlign, tooltipAnchor]
+  )
+
+  //- END REACT CHARTS -------------------------------------------
+
   return (
     <View style={styles.container}>
       <View style={styles.container_navbar}>
@@ -61,20 +117,19 @@ export default function App() {
             <Nav.Link href="#home">Home</Nav.Link>
           </Nav>
           <Form inline>
-            <FormControl type="text" placeholder="Addresse" className="mr-sm-2" />
-            <Button variant="outline-info">Los</Button>
+            <FormControl type="text" placeholder="Address" className="mr-sm-2" />
+            <Button variant="outline-info">Go</Button>
           </Form>
         </Navbar>
       </View>
       
 
       <View style={styles.content_area}>
-        <Card style={{ width: '18rem' }}>
+        <Card style={{ width: '18rem', zIndex: 1}}>
           <Card.Body>
-            <Card.Title>Current Temperature</Card.Title>
+            <Card.Title>Current Data</Card.Title>
             <Card.Text>
-              Some quick example text to build on the card title and make up the bulk of
-              the card's content.
+              Here you can see the current temperature and humidity data read from the IOTA Tangle.
             </Card.Text>
           </Card.Body>
           <ListGroup className="list-group-flush">
@@ -86,6 +141,16 @@ export default function App() {
             <Button onclick="IotaGet()">Reload</Button>
           </Card.Body>
         </Card>
+
+        <View style={styles.temp_chart}>
+          <Chart data={data}
+                  axes={axes}
+                  primaryCursor
+                  secondaryCursor
+                  tooltip={tooltip}
+            />
+        </View>
+
       </View>
     </View>
   );
@@ -103,7 +168,17 @@ const styles = StyleSheet.create({
 
   content_area: {
     alignItems: 'center',
-    justifyContent: "center",
-    marginTop: 20
+    marginTop: 20,
+    padding: 10,
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+  },
+
+  temp_chart: {
+    height: '350px',
+    width: '40rem',
+    marginLeft: 20,
+    zIndex: 1
   }
 });
