@@ -111,8 +111,8 @@ iota.getNewAddress(seed, { index: 0, securityLevel: securityLevel, total: 1 })
 // Configuring the HTTP server
 var server = http.createServer(function (request, response) {
   response.writeHead(200, {"Content-Type": "text/plain"});
-  response.end("LogU IOTA Supply Chain\n");
-  response.end("The used seed is: " + seed + "\n");
+  response.send("LogU IOTA Supply Chain\n");
+  response.send("The used seed is: " + seed + "\n");
   response.end("The used address is: " + IOTAaddress + "\n");
 });
 server.listen(8000);
