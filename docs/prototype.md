@@ -49,3 +49,34 @@ Type: `sudo apt install git`
 After launching the script, the RaspberryPi will open up a simple Web server which you can access using the raspi's IP Address. After setting up all variables, it will output a valid IOTA Address with accompanying Seed on the Web Server and console. Keep that Root in mind, as we need it later to fetch our temperature data.</br>
 
 The RaspberryPi will push temperature and humidity data as well as a current timestamp from the DHT11 sensor right onto the tangle, referencing the Root address mentioned before. If you analyze the tangle, you can determine the current temperature easily with the online tool. If you are pushing data onto the IOTA Comnet (or Testnet), you can validate the process using the [TangleExplorer](https://comnet.thetangle.org/) and the generated address.
+
+# On Start-Up
+
+To get this script running when booting the Raspberry Pi Up as a service, follow these instructions:
+
+1. Create a script in the init.d folder:</br>
+`sudo nano /etc/init.d/IOTAService`
+2. Copy the template for a INIT Script from this [GitHub Page](https://raw.githubusercontent.com/fhd/init-script-template/master/template) and paste it into your IOTAService Script.
+3. Open IOTAService by typing `sudo nano /etc/init.d/IOTAService` into the terminal.
+4. Change the following variables:</br>
+Providers: IOTAService</br>
+dir="/home/pi/github/logu-iota/prototype/ZVT"</br>
+cmd="node zerovalue_public.js"</br>
+user="root"
+5. Change the permissions `sudo chmod 755 /etc/init.d/IOTAService`
+6. Activate your Service `sudo update-rc.d IOTAService defaults`
+
+Now, the IOTA Service consisting of your JS-File will start with the raspberry pi. To start or stop it manually, use the following commands:
+
+* `sudo /etc/init.d/IOTAService start`
+* `sudo /etc/init.d/IOTAService stop`
+* `sudo /etc/init.d/IOTAService restart`
+
+To get the status of your service, use:
+
+* `/etc/init.d/IOTAService status`
+
+To access the logs, type:
+
+* `tail -f /var/log/IOTAService.log`
+* `tail -f /var/log/IOTAService.err`

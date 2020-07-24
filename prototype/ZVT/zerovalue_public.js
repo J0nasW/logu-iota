@@ -24,7 +24,7 @@ const provider = 'https://nodes.comnet.thetangle.org:443' //Using the public DEV
 const depth = 3 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
 const securityLevel = 2 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
 const minWeight = 10 //Optional minimum number of trailing zeros in transaction hash. This is used by attachToTangle function to search for a valid nonce. Currently is 14 on mainnet & spamnnet and 9 on most other devnets. Null value will set minWeightMagnitude to 9
-const TIMEINTERVAL  = 60; // In seconds.
+const TIMEINTERVAL  = 300; // In seconds.
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 // FUNCTIONS -----------------------------------------------------------------------------------------------------------------------------------
@@ -111,7 +111,8 @@ iota.getNewAddress(seed, { index: 0, securityLevel: securityLevel, total: 1 })
 // Configuring the HTTP server
 var server = http.createServer(function (request, response) {
   response.writeHead(200, {"Content-Type": "text/plain"});
-  response.write("LogU IOTA Supply Chain Node #1\n");
+  response.write("LogU IOTA Supply Chain Node #1\n\n");
+  response.write("The current Time Interval for publishing transactions is:" + TIMEINTERVAL + "seconds.\n");
   response.write("The used seed is: " + seed + "\n");
   response.write("The used address is: " + IOTAaddress + "\n");
   response.end();
