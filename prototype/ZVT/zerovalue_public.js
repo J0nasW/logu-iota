@@ -112,9 +112,10 @@ iota.getNewAddress(seed, { index: 0, securityLevel: securityLevel, total: 1 })
 var server = http.createServer(function (request, response) {
   response.writeHead(200, {"Content-Type": "text/plain"});
   response.write("LogU IOTA Supply Chain Node #1\n\n");
-  response.write("The current Time Interval for publishing transactions is:" + TIMEINTERVAL + "seconds.\n");
+  response.write("The current Time Interval for publishing transactions is: " + TIMEINTERVAL + " seconds.\n");
   response.write("The used seed is: " + seed + "\n");
   response.write("The used address is: " + IOTAaddress + "\n");
+  response.append("Go to the COMNET Explorer", ["https://comnet.thetangle.org/address/" + IOTAaddress]);
   response.end();
 });
 server.listen(8000);
