@@ -29,6 +29,73 @@ import usePromise from 'react-use-promise';
 //const Converter = require('@iota/converter');
 
 
+async function handleReload () {
+  alert('IOTA Reload started!');
+
+  const address =
+  'BGBBAZLDCUI9SKZNDQHBLPU9BEKOZZCCUZNTVLZ9BAYBZOTSVUGUCTEJATUCYLHKUIUUQTZSUPDDPPCPDUFZP9HBZB';
+
+  
+  const [result, error, state] = usePromise(
+    () => new Promise(resolve => {
+      iota.findTransactionObjects({ addresses: [address] });
+    }),
+    []
+  );
+
+  alert(result);
+  const msg = result;
+
+  alert(msg);
+  msg.sort(function (a, b) { return b.timestamp - a.timestamp; })
+  .map(tx => tx.signatureMessageFragment)
+  .join('')
+  .slice(0,2186);
+
+  var data = Converter.trytesToAscii(msg_slice)
+  console.log('Encoded message:' + data)
+
+  iota.findTransactionObjects({ addresses: [address] }) 
+  .then(response => {
+    alert('Got into the promise...');
+    const msg = response
+      .sort(function (a, b) { return b.timestamp - a.timestamp; })
+      .map(tx => tx.signatureMessageFragment)
+      .join('')
+    
+    msg_slice = msg.slice(0,2186);
+    console.log(msg_slice)
+    var data = Converter.trytesToAscii(msg_slice)
+    
+    console.log('Encoded message:')
+    console.log(data)
+
+    //Parse JSON
+    // preserve newlines, etc - use valid JSON
+    data = data.replace(/\\n/g, "\\n")  
+    .replace(/\\'/g, "\\'")
+    .replace(/\\"/g, '\\"')
+    .replace(/\\&/g, "\\&")
+    .replace(/\\r/g, "\\r")
+    .replace(/\\t/g, "\\t")
+    .replace(/\\b/g, "\\b")
+    .replace(/\\f/g, "\\f");
+    // remove non-printable and other non-valid JSON chars
+    data = data.replace(/[\u0000-\u0019]+/g,""); 
+    var payload = JSON.parse(data);
+    alert("Got it!");
+    alert('Temperature Data: ' + payload.Temperature);
+    //return payload;
+  })
+  .catch(err => {
+    alert('Error. See Console Log.');
+    console.error(err)
+  })
+
+  alert('IOTA Reload finished!');
+  window.location.reload(false);
+}
+
 
 export default function App() {
 
@@ -39,72 +106,7 @@ export default function App() {
   var payload = 0;
   const msg = 0;
 
-  function handleReload () {
-    alert('IOTA Reload started!');
-
-    const address =
-    'BGBBAZLDCUI9SKZNDQHBLPU9BEKOZZCCUZNTVLZ9BAYBZOTSVUGUCTEJATUCYLHKUIUUQTZSUPDDPPCPDUFZP9HBZB';
-
-    
-    const [result, error, state] = usePromise(
-      () => new Promise(resolve => {
-        iota.findTransactionObjects({ addresses: [address] });
-      }),
-      []
-    );
-
-    alert(result);
-    const msg = result;
-
-    alert(msg);
-    msg.sort(function (a, b) { return b.timestamp - a.timestamp; })
-    .map(tx => tx.signatureMessageFragment)
-    .join('')
-    .slice(0,2186);
-
-    var data = Converter.trytesToAscii(msg_slice)
-    console.log('Encoded message:' + data)
-
-    iota.findTransactionObjects({ addresses: [address] }) 
-    .then(response => {
-      alert('Got into the promise...');
-      const msg = response
-        .sort(function (a, b) { return b.timestamp - a.timestamp; })
-        .map(tx => tx.signatureMessageFragment)
-        .join('')
-      
-      msg_slice = msg.slice(0,2186);
-      console.log(msg_slice)
-      var data = Converter.trytesToAscii(msg_slice)
-      
-      console.log('Encoded message:')
-      console.log(data)
-
-      //Parse JSON
-      // preserve newlines, etc - use valid JSON
-      data = data.replace(/\\n/g, "\\n")  
-      .replace(/\\'/g, "\\'")
-      .replace(/\\"/g, '\\"')
-      .replace(/\\&/g, "\\&")
-      .replace(/\\r/g, "\\r")
-      .replace(/\\t/g, "\\t")
-      .replace(/\\b/g, "\\b")
-      .replace(/\\f/g, "\\f");
-      // remove non-printable and other non-valid JSON chars
-      data = data.replace(/[\u0000-\u0019]+/g,""); 
-      var payload = JSON.parse(data);
-      alert("Got it!");
-      alert('Temperature Data: ' + payload.Temperature);
-      //return payload;
-    })
-    .catch(err => {
-      alert('Error. See Console Log.');
-      console.error(err)
-    })
-
-    alert('IOTA Reload finished!');
-    window.location.reload(false);
-  }
+  
 
   //- REACT Charts ----------------------------------------------
   const data = React.useMemo(
