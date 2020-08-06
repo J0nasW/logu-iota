@@ -17,53 +17,94 @@ import { Chart } from 'react-charts'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { anchorClosest, alignAuto } from 'react-charts/dist/react-charts.development';
 
+// IOTA Things
+//import { IotaProvider } from "react-iota";
+import * as IotaProvider from '@iota/core';
+import * as Converter from '@iota/converter';
 
-function IotaGet (address) {
-  iota
-  .findTransactionObjects({ addresses: [address] })
-  .then(response => {
-    const msg = response
-      .sort(function (a, b) { return b.timestamp - a.timestamp; })
-      .map(tx => tx.signatureMessageFragment)
-      .join('')
-    
-    msg_slice = msg.slice(0,2186);
-    console.log(msg_slice)
-    const data = Converter.trytesToAscii(msg_slice)
-    
-    console.log('Encoded message:')
-    console.log(data)
+//import usePromise from 'react-promise';
+import usePromise from 'react-use-promise';
 
-    //Parse JSON
-    var payload = JSON.parse(data);
-    console.log(payload.Temperature)
-    return data;
-  })
-  .catch(err => {
-    console.error(err)
-  })
-}
+//const iotaLibrary = require('@iota/core');
+//const Converter = require('@iota/converter');
 
-function handleReload() {
-  console.log('Click happened');
-}
+
 
 export default function App() {
 
-  // OWN FUNCTIONS
-
-  
-
-  // IOTA Things
-  const iotaLibrary = require('@iota/core')
-  const Converter = require('@iota/converter')
-
-  const iota = iotaLibrary.composeAPI({
+  var iota = IotaProvider.composeAPI({
     provider: 'https://nodes.comnet.thetangle.org:443'
-  })
+  });
 
-  const address =
-    'XSWFSZFGBNKLSJYVVSASFGVPRWIK9HY9ISQBTABPIWSBVDQRGZEZITFQOW9UZBZPJLCOAJOGSEBXCJCIC'
+  var payload = 0;
+  const msg = 0;
+
+  function handleReload () {
+    alert('IOTA Reload started!');
+
+    const address =
+    'BGBBAZLDCUI9SKZNDQHBLPU9BEKOZZCCUZNTVLZ9BAYBZOTSVUGUCTEJATUCYLHKUIUUQTZSUPDDPPCPDUFZP9HBZB';
+
+    
+    const [result, error, state] = usePromise(
+      () => new Promise(resolve => {
+        iota.findTransactionObjects({ addresses: [address] });
+      }),
+      []
+    );
+
+    alert(result);
+    const msg = result;
+
+    alert(msg);
+    msg.sort(function (a, b) { return b.timestamp - a.timestamp; })
+    .map(tx => tx.signatureMessageFragment)
+    .join('')
+    .slice(0,2186);
+
+    var data = Converter.trytesToAscii(msg_slice)
+    console.log('Encoded message:' + data)
+
+    iota.findTransactionObjects({ addresses: [address] }) 
+    .then(response => {
+      alert('Got into the promise...');
+      const msg = response
+        .sort(function (a, b) { return b.timestamp - a.timestamp; })
+        .map(tx => tx.signatureMessageFragment)
+        .join('')
+      
+      msg_slice = msg.slice(0,2186);
+      console.log(msg_slice)
+      var data = Converter.trytesToAscii(msg_slice)
+      
+      console.log('Encoded message:')
+      console.log(data)
+
+      //Parse JSON
+      // preserve newlines, etc - use valid JSON
+      data = data.replace(/\\n/g, "\\n")  
+      .replace(/\\'/g, "\\'")
+      .replace(/\\"/g, '\\"')
+      .replace(/\\&/g, "\\&")
+      .replace(/\\r/g, "\\r")
+      .replace(/\\t/g, "\\t")
+      .replace(/\\b/g, "\\b")
+      .replace(/\\f/g, "\\f");
+      // remove non-printable and other non-valid JSON chars
+      data = data.replace(/[\u0000-\u0019]+/g,""); 
+      var payload = JSON.parse(data);
+      alert("Got it!");
+      alert('Temperature Data: ' + payload.Temperature);
+      //return payload;
+    })
+    .catch(err => {
+      alert('Error. See Console Log.');
+      console.error(err)
+    })
+
+    alert('IOTA Reload finished!');
+    window.location.reload(false);
+  }
 
   //- REACT Charts ----------------------------------------------
   const data = React.useMemo(
@@ -140,12 +181,12 @@ export default function App() {
             </Card.Text>
           </Card.Body>
           <ListGroup className="list-group-flush">
-            <ListGroupItem>Temperature: 22°C</ListGroupItem>
-            <ListGroupItem>Humidity: 96%</ListGroupItem>
-            <ListGroupItem>Timestamp: 2020-07-10 14:32</ListGroupItem>
+            <ListGroupItem>Temperature: {payload.Temperature}</ListGroupItem>
+            <ListGroupItem>Humidity: {payload.Humidity}</ListGroupItem>
+            <ListGroupItem>Timestamp: {payload.dateTime}</ListGroupItem>
           </ListGroup>
           <Card.Body>
-            <Button onClick={this.handleReload.bind(this)}>Reload</Button>
+            <Button onClick={handleReload}>Reload</Button>
           </Card.Body>
         </Card>
 

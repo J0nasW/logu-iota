@@ -10,7 +10,8 @@ const iota = iotaLibrary.composeAPI({
 })
 
 const address =
-  'XSWFSZFGBNKLSJYVVSASFGVPRWIK9HY9ISQBTABPIWSBVDQRGZEZITFQOW9UZBZPJLCOAJOGSEBXCJCIC'
+  'NNWDDGQMVMOBTXBNDQAT9YEYNKIDCQXTOBCO9TCTSKRSWXFWO9CFJSEQRW9NCIAUJMLVCWFVAHBIWAOO9'
+
 
 iota
   .findTransactionObjects({ addresses: [address] })
@@ -19,18 +20,36 @@ iota
       .sort(function (a, b) { return b.timestamp - a.timestamp; })
       .map(tx => tx.signatureMessageFragment)
       .join('')
-    
-    msg_slice = msg.slice(0,2186);
+      
+    const msg_slice = msg.slice(0,2186);
     console.log(msg_slice)
-    const data = Converter.trytesToAscii(msg_slice)
+    var data = Converter.trytesToAscii(msg_slice)
     
     console.log('Encoded message:')
     console.log(data)
 
     //Parse JSON
+    // preserve newlines, etc - use valid JSON
+    data = data.replace(/\\n/g, "\\n")  
+    .replace(/\\'/g, "\\'")
+    .replace(/\\"/g, '\\"')
+    .replace(/\\&/g, "\\&")
+    .replace(/\\r/g, "\\r")
+    .replace(/\\t/g, "\\t")
+    .replace(/\\b/g, "\\b")
+    .replace(/\\f/g, "\\f");
+    // remove non-printable and other non-valid JSON chars
+    data = data.replace(/[\u0000-\u0019]+/g,""); 
     var payload = JSON.parse(data);
+
+
+    //var payload = JSON.parse(data);
     console.log(payload.Temperature)
+    console.log(payload.Humidity)
+    console.log(payload.dateTime)
+
   })
   .catch(err => {
     console.error(err)
   })
+  
