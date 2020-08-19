@@ -8,12 +8,6 @@ import { Button, Nav, Navbar, Form, FormControl, Card, ListGroup, ListGroupItem 
 // For Temperature and Humidity Charts
 import { Chart } from 'react-charts'
 
-//import Button from 'react-bootstrap/Button';
-//import Nav from 'react-bootstrap/Nav';
-//import Navbar from 'react-bootstrap/Navbar';
-//import Form from 'react-bootstrap/Form';
-//import FormControl from 'react-bootstrap/FormControl';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { anchorClosest, alignAuto } from 'react-charts/dist/react-charts.development';
 
@@ -22,57 +16,28 @@ import { anchorClosest, alignAuto } from 'react-charts/dist/react-charts.develop
 import * as IotaProvider from '@iota/core';
 import * as Converter from '@iota/converter';
 
-//import usePromise from 'react-promise';
-import usePromise from 'react-use-promise';
 
-//const iotaLibrary = require('@iota/core');
-//const Converter = require('@iota/converter');
-
-
-async function handleReload () {
+async function handleReload() {
   alert('IOTA Reload started!');
 
-  const address =
-  'BGBBAZLDCUI9SKZNDQHBLPU9BEKOZZCCUZNTVLZ9BAYBZOTSVUGUCTEJATUCYLHKUIUUQTZSUPDDPPCPDUFZP9HBZB';
+  const address = 'WCPHNHXVHL9A9XXRKIEMDNQBIYYGJKMIJIOA9NQICT9EZIYXKMEJTRHGZLEUQOVNRCWGXHNBPYZTBOCEY';
 
-  
-  const [result, error, state] = usePromise(
-    () => new Promise(resolve => {
-      iota.findTransactionObjects({ addresses: [address] });
-    }),
-    []
-  );
+  var iota = IotaProvider.composeAPI({
+    provider: 'https://nodes.comnet.thetangle.org:443'
+  });
+  //try {
+    let result = await iota.findTransactionObjects({ addresses: [address] });
 
-  alert(result);
-  const msg = result;
+    var msg = result.sort(function (a, b) { return b.timestamp - a.timestamp; });
+    msg = msg.map(tx => tx.signatureMessageFragment);
+    msg = msg.join('');
+    msg = msg.slice(0,2186);
 
-  alert(msg);
-  msg.sort(function (a, b) { return b.timestamp - a.timestamp; })
-  .map(tx => tx.signatureMessageFragment)
-  .join('')
-  .slice(0,2186);
-
-  var data = Converter.trytesToAscii(msg_slice)
-  console.log('Encoded message:' + data)
-
-  iota.findTransactionObjects({ addresses: [address] }) 
-  .then(response => {
-    alert('Got into the promise...');
-    const msg = response
-      .sort(function (a, b) { return b.timestamp - a.timestamp; })
-      .map(tx => tx.signatureMessageFragment)
-      .join('')
-    
-    msg_slice = msg.slice(0,2186);
-    console.log(msg_slice)
-    var data = Converter.trytesToAscii(msg_slice)
-    
-    console.log('Encoded message:')
-    console.log(data)
+    var data = Converter.trytesToAscii(msg);
 
     //Parse JSON
     // preserve newlines, etc - use valid JSON
-    data = data.replace(/\\n/g, "\\n")  
+    data = data.toString().replace(/\\n/g, "\\n")  
     .replace(/\\'/g, "\\'")
     .replace(/\\"/g, '\\"')
     .replace(/\\&/g, "\\&")
@@ -81,32 +46,25 @@ async function handleReload () {
     .replace(/\\b/g, "\\b")
     .replace(/\\f/g, "\\f");
     // remove non-printable and other non-valid JSON chars
-    data = data.replace(/[\u0000-\u0019]+/g,""); 
+    data = data.replace(/[\u0000-\u0019]+/g,"");
     var payload = JSON.parse(data);
     alert("Got it!");
-    alert('Temperature Data: ' + payload.Temperature);
-    //return payload;
-  })
-  .catch(err => {
-    alert('Error. See Console Log.');
-    console.error(err)
-  })
-
-  alert('IOTA Reload finished!');
-  window.location.reload(false);
+    // Format: {"Temperature":"26.0","Humidity":"61.0","dateTime":"18/08/2020 12:09:18"}
+    alert("Temperature:" + payload.Temperature);
+    alert("Humidity:" + payload.Humidity);
+    alert("Timestamp:" + payload.dateTime);
+    localStorage.setItem('payload',payload);
+    window.location.reload(false);
+    return payload;
+  //} catch (error) {
+  //    alert("Something went wrong. Maybe the Address is not correct.");
+  //    return 0;
+  //}
+  
 }
 
 
 export default function App() {
-
-  var iota = IotaProvider.composeAPI({
-    provider: 'https://nodes.comnet.thetangle.org:443'
-  });
-
-  var payload = 0;
-  const msg = 0;
-
-  
 
   //- REACT Charts ----------------------------------------------
   const data = React.useMemo(
@@ -114,21 +72,21 @@ export default function App() {
       {
         label: 'Temperature',
         data: [
-          [0, 1],
-          [1, 2],
-          [2, 4],
-          [3, 2],
-          [4, 7],
+          [0, 22],
+          [1, 22],
+          [2, 23],
+          [3, 23],
+          [4, 21],
         ],
       },
       {
         label: 'Humidity',
         data: [
-          [0, 3],
-          [1, 1],
-          [2, 5],
-          [3, 6],
-          [4, 4],
+          [0, 68],
+          [1, 69],
+          [2, 68],
+          [3, 65],
+          [4, 66],
         ],
       },
     ],
@@ -155,55 +113,98 @@ export default function App() {
   )
 
   //- END REACT CHARTS -------------------------------------------
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.container_navbar}>
-        <Navbar fixed="top" sticky="top" bg="dark" variant="dark">
-          <Navbar.Brand href="#home">
-            LogU IOTA Inspector
-          </Navbar.Brand>
-          <Nav className="mr-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-          </Nav>
-          <Form inline>
-            <FormControl type="text" placeholder="Address" className="mr-sm-2" />
-            <Button variant="outline-info">Go</Button>
-          </Form>
-        </Navbar>
-      </View>
-      
-
-      <View style={styles.content_area}>
-        <Card style={{ width: '18rem', zIndex: 1}}>
-          <Card.Body>
-            <Card.Title>Current Data</Card.Title>
-            <Card.Text>
-              Here you can see the current temperature and humidity data read from the IOTA Tangle.
-            </Card.Text>
-          </Card.Body>
-          <ListGroup className="list-group-flush">
-            <ListGroupItem>Temperature: {payload.Temperature}</ListGroupItem>
-            <ListGroupItem>Humidity: {payload.Humidity}</ListGroupItem>
-            <ListGroupItem>Timestamp: {payload.dateTime}</ListGroupItem>
-          </ListGroup>
-          <Card.Body>
-            <Button onClick={handleReload}>Reload</Button>
-          </Card.Body>
-        </Card>
-
-        <View style={styles.temp_chart}>
-          <Chart data={data}
-                  axes={axes}
-                  primaryCursor
-                  secondaryCursor
-                  tooltip={tooltip}
-            />
+  //window.location.reload(false);
+  var payload = localStorage.getItem('payload');
+  if (payload != 0) {
+    alert(JSON.stringify(payload))
+    return (
+      <View style={styles.container}>
+        <View style={styles.container_navbar}>
+          <Navbar fixed="top" sticky="top" bg="dark" variant="dark">
+            <Navbar.Brand href="#home">
+              LogU IOTA Inspector
+            </Navbar.Brand>
+            <Nav className="mr-auto">
+              <Nav.Link href="#home">Home</Nav.Link>
+            </Nav>
+            <Form inline>
+              <FormControl type="text" placeholder="Address" className="mr-sm-2" />
+              <Button variant="outline-info">Go</Button>
+            </Form>
+          </Navbar>
         </View>
-
+        
+  
+        <View style={styles.content_area}>
+          <Card style={{ width: '18rem', zIndex: 1}}>
+            <Card.Body>
+              <Card.Title>Current Data</Card.Title>
+              <Card.Text>
+                Here you can see the current temperature and humidity data read from the IOTA Tangle.
+              </Card.Text>
+            </Card.Body>
+            <ListGroup className="list-group-flush">
+              <ListGroupItem>Temperature: {payload.Temperature}</ListGroupItem>
+              <ListGroupItem>Humidity: {payload.Humidity}</ListGroupItem>
+              <ListGroupItem>Timestamp: {payload.dateTime}</ListGroupItem>
+            </ListGroup>
+            <Card.Body>
+              <Button onClick={handleReload}>Reload</Button>
+            </Card.Body>
+          </Card>
+          
+          <View style={styles.temp_chart}>
+            <Chart data={data}
+                    axes={axes}
+                    primaryCursor
+                    secondaryCursor
+                    tooltip={tooltip}
+              />
+          </View>
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
+  else if (payload == 0) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.container_navbar}>
+          <Navbar fixed="top" sticky="top" bg="dark" variant="dark">
+            <Navbar.Brand href="#home">
+              LogU IOTA Inspector
+            </Navbar.Brand>
+            <Nav className="mr-auto">
+              <Nav.Link href="#home">Home</Nav.Link>
+            </Nav>
+            <Form inline>
+              <FormControl type="text" placeholder="Address" className="mr-sm-2" />
+              <Button variant="outline-info">Go</Button>
+            </Form>
+          </Navbar>
+        </View>
+        
+  
+        <View style={styles.content_area}>
+          <Card style={{ width: '18rem', zIndex: 1}}>
+            <Card.Body>
+              <Card.Title>Current Data</Card.Title>
+              <Card.Text>
+                Here you can see the current temperature and humidity data read from the IOTA Tangle.
+              </Card.Text>
+            </Card.Body>
+            <ListGroup className="list-group-flush">
+              <ListGroupItem>No Temperature Data available.</ListGroupItem>
+              <ListGroupItem>No Humidity Data available.</ListGroupItem>
+              <ListGroupItem>No Timestamp available.</ListGroupItem>
+            </ListGroup>
+            <Card.Body>
+              <Button onClick={handleReload}>Reload</Button>
+            </Card.Body>
+          </Card>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
