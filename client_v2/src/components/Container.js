@@ -26,6 +26,7 @@ function Container(props) {
               <Text style={styles.ankunft_ort}>Rotterdam, Niederlande</Text>
               <Text style={styles.ankunft_zeit}>27. September 2020, 15:53 Uhr</Text>
             </View>
+            
             <View style={styles.ContentRowFiller}></View>
             <View style={styles.line}></View>
             <View style={styles.ContentRowFiller}></View>
@@ -66,7 +67,8 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     flexDirection:'row',
     alignItems:'center',
-    padding: 20
+    padding: 20,
+    zIndex: 2,
   },
 
     image: {

@@ -6,51 +6,61 @@ function Popupwin(props) {
   return (
     <View style={[styles.container, props.style]}>
       <View style={styles.rect}>
-        <View style={styles.imageRow}>
+        <View style={styles.Row1}>
           <Image
             source={require("../assets/images/Maersk1.png")}
             resizeMode="contain"
-            style={styles.image}
+            style={styles.company}
           ></Image>
-          <View style={styles.container1Column}>
-            <Text style={styles.container1}>Container</Text>
-            <Text style={styles.mwbnb1}>MWBNB564534884a</Text>
+          <View style={styles.Row1Column1}>
+            <Text style={styles.container_heading}>Container</Text>
+            <Text style={styles.container_name}>MWBNB564534884a</Text>
           </View>
-          <View style={styles.buchungsnummer1Column}>
-            <Text style={styles.buchungsnummer1}>Buchungsnummer</Text>
-            <Text style={styles.hamburgDeutschland2}>35646794533</Text>
+          <View style={styles.Row1Column2}>
+            <Text style={styles.buchungsnummer_heading}>Buchungsnummer</Text>
+            <Text style={styles.buchungsnummer}>35646794533</Text>
           </View>
         </View>
-        <TempButton style={styles.tempButton}></TempButton>
-        <View style={styles.rect2}></View>
+
+        <View style={styles.Row2}>
+          <TempButton style={styles.tempButton}></TempButton>
+        </View>
+
+        <View style={styles.graph}>
+          <Text>Graph here</Text>
+        </View>
+
         <Image
           source={require("../assets/images/001-lettuce.png")}
           resizeMode="contain"
-          style={styles.image2}
+          style={styles.image_lettuce}
         ></Image>
-        <View style={styles.image1Row}>
+        <View style={styles.Row3}>
           <Image
             source={require("../assets/images/003-snowflake.png")}
             resizeMode="contain"
-            style={styles.image1}
+            style={styles.image_frozen}
           ></Image>
-          <View style={styles.gefroren1Stack}>
-            <Text style={styles.gefroren1}>gefroren</Text>
-            <Text style={styles.blattsalat1}>Blattsalat</Text>
+          <View style={styles.Content_Stack}>
+            <Text style={styles.blattsalat}>Blattsalat</Text>
+            <Text style={styles.gefroren}>gefroren</Text>
           </View>
         </View>
-        <View style={styles.abfahrt3Row}>
-          <Text style={styles.abfahrt3}>Abfahrt</Text>
-          <Text style={styles.ankunft1}>Ankunft</Text>
+
+        <View style={styles.Row4}>
+          <View style={styles.Row4Column1}>
+            <Text style={styles.abfahrt}>Abfahrt</Text>
+            <Text style={styles.abfahrt_ort}>Hamburg, Deutschland</Text>
+            <Text style={styles.abfahrt_zeit}>26. September 2020, 08:32 Uhr</Text>
+          </View>
+
+          <View style={styles.Row4Column2}>
+            <Text style={styles.ankunft}>Ankunft</Text>
+            <Text style={styles.ankunft_ort}>Rotterdam, Niederlande</Text>
+            <Text style={styles.ankunft_zeit}>27. September 2020, 15:53 Uhr</Text>
+          </View>
         </View>
-        <View style={styles.hamburgDeutschland3Row}>
-          <Text style={styles.hamburgDeutschland3}>Hamburg, Deutschland</Text>
-          <Text style={styles.hamburgDeutschland1}>Rotterdam, Niederlande</Text>
-        </View>
-        <View style={styles.abfahrt2Row}>
-          <Text style={styles.abfahrt2}>26. September 2020, 08:32 Uhr</Text>
-          <Text style={styles.abfahrt1}>27. September 2020, 15:53 Uhr</Text>
-        </View>
+
       </View>
     </View>
   );
@@ -59,106 +69,158 @@ function Popupwin(props) {
 const styles = StyleSheet.create({
   container: {},
   rect: {
-    width: 916,
-    height: 916,
-    backgroundColor: "rgba(255,255,255,1)",
-    borderRadius: 30
+    backgroundColor: "rgba(255,255,255,1)"
   },
-  image: {
-    width: 98,
-    height: 98
-  },
-  container1: {
-    fontFamily: "roboto-regular",
-    color: "rgba(119,119,119,1)",
-    fontSize: 20
-  },
-  mwbnb1: {
-    fontFamily: "roboto-700",
-    color: "rgba(0,0,0,1)",
-    fontSize: 40
-  },
-  container1Column: {
-    width: 377,
-    marginLeft: 42,
-    marginTop: 13,
-    marginBottom: 13
-  },
-  buchungsnummer1: {
-    fontFamily: "roboto-regular",
-    color: "rgba(119,119,119,1)",
-    fontSize: 20
-  },
-  hamburgDeutschland2: {
-    fontFamily: "roboto-500",
-    color: "rgba(0,0,0,1)",
-    fontSize: 30
-  },
-  buchungsnummer1Column: {
-    width: 188,
-    marginLeft: 96,
-    marginTop: 19,
-    marginBottom: 18
-  },
-  imageRow: {
-    height: 98,
+  Row1: {
+    height: 100,
     flexDirection: "row",
-    marginTop: 46,
-    marginLeft: 45,
-    marginRight: 70
+    marginTop: 30,
+    marginLeft: 40,
   },
-  tempButton: {
+    company: {
+      width: 80,
+      height: 80
+    },
+
+    Row1Column1: {
+      width: 350,
+      marginLeft: 40,
+      marginTop: 15
+    },
+      container_heading: {
+        fontFamily: "roboto-regular",
+        color: "rgba(119,119,119,1)",
+        fontSize: 20,
+        marginTop: -5
+      },
+      container_name: {
+        fontFamily: "roboto-700",
+        color: "rgba(0,0,0,1)",
+        fontSize: 30,
+        marginTop: -3
+      },
+
+    Row1Column2: {
+      width: 180,
+      marginLeft: 80,
+      marginTop: 15,
+    },
+      buchungsnummer_heading: {
+        fontFamily: "roboto-regular",
+        color: "rgba(119,119,119,1)",
+        fontSize: 20,
+        marginTop: -5
+      },
+      buchungsnummer: {
+        fontFamily: "roboto-500",
+        color: "rgba(0,0,0,1)",
+        fontSize: 25,
+        marginTop: -3
+      },
+  
+  Row2: {
     height: 60,
-    width: 279,
-    marginTop: 47,
-    marginLeft: 103
+    flexDirection: "row",
+    marginTop: 10,
+    marginLeft: 100,
   },
-  rect2: {
-    width: 718,
-    height: 264,
+    tempButton: {
+      height: 60,
+      width: 280,
+    },
+
+
+  graph: {
+    width: 720,
+    height: 250,
     backgroundColor: "#E6E6E6",
-    marginTop: 37,
-    marginLeft: 99
+    marginTop: 35,
+    marginLeft: 100
   },
-  image2: {
-    width: 106,
-    height: 106,
-    marginTop: 44,
-    marginLeft: 405
-  },
-  image1: {
-    width: 37,
-    height: 37,
-    marginTop: 9
-  },
-  gefroren1: {
-    top: 27,
-    left: 0,
-    position: "absolute",
-    fontFamily: "roboto-regular",
-    color: "rgba(119,119,119,1)",
-    fontSize: 20
-  },
-  blattsalat1: {
-    top: 0,
-    left: 0,
-    position: "absolute",
-    fontFamily: "roboto-regular",
-    color: "rgba(0,0,0,1)",
-    fontSize: 25
-  },
-  gefroren1Stack: {
-    width: 106,
-    height: 51,
-    marginLeft: 9
-  },
-  image1Row: {
+
+  Row3: {
     height: 51,
     flexDirection: "row",
     marginTop: 12,
     marginLeft: 382,
     marginRight: 382
   },
+    image_lettuce: {
+      width: 100,
+      height: 100,
+      marginTop: 40,
+      alignSelf: "center"
+    },
+  image_frozen: {
+    width: 35,
+    height: 35,
+    marginTop: 10
+  },
+  Content_Stack: {
+    width: 120,
+    height: 50,
+    marginLeft: 10,
+    alignSelf: "center"
+  },
+    blattsalat: {
+      fontFamily: "roboto-regular",
+      color: "rgba(0,0,0,1)",
+      fontSize: 25
+    },
+    gefroren: {
+      fontFamily: "roboto-regular",
+      color: "rgba(119,119,119,1)",
+      fontSize: 20,
+    },
+  
+  Row4: {
+    height: 200,
+    flexDirection: "row",
+    marginTop: 10,
+    alignSelf: "center"
+  },
+    Row4Column1: {
+      width: 400,
+      marginLeft: 10
+    },
+      abfahrt: {
+        fontFamily: "roboto-regular",
+        color: "rgba(119,119,119,1)",
+        fontSize: 20,
+        marginTop: 30
+      },
+      abfahrt_ort: {
+        fontFamily: "roboto-500",
+        color: "rgba(0,0,0,1)",
+        fontSize: 30
+      },
+      abfahrt_zeit: {
+        fontFamily: "roboto-regular",
+        color: "rgba(119,119,119,1)",
+        fontSize: 20
+      },
+    Row4Column2: {
+      width: 400,
+      marginRight: 10
+    },
+      ankunft: {
+        fontFamily: "roboto-regular",
+        color: "rgba(119,119,119,1)",
+        fontSize: 20,
+        marginTop: 35
+      },
+      ankunft_ort: {
+        fontFamily: "roboto-500",
+        color: "rgba(0,0,0,1)",
+        fontSize: 30
+      },
+      ankunft_zeit: {
+        fontFamily: "roboto-regular",
+        color: "rgba(119,119,119,1)",
+        fontSize: 20
+      },
+
+
   abfahrt3: {
     fontFamily: "roboto-regular",
     color: "rgba(119,119,119,1)",

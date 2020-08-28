@@ -1,55 +1,81 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text, Dimensions, ScrollView, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, Dimensions, ScrollView, TouchableOpacity, TouchableHighlight, Button } from "react-native";
 import Header from "../components/Header";
 import Container from "../components/Container";
 import Plus from "../components/Plus";
 
-import Modal from 'react-native-modal';
+import Addresswin from "../components/Addresswin";
+import Popupwin from "../components/Popupwin";
+
+import Popup from "reactjs-popup";
 
 var width = Dimensions.get('window').width; //full width
-var width_80 = Dimensions.get('window').width*0.8; //full width
+var width_80 = Dimensions.get('window').width*0.8; //80% width
+var width_50 = Dimensions.get('window').width*0.5; //50% width
+var height = Dimensions.get('window').height; //full height
+var height_50 = Dimensions.get('window').height*0.5; //50% height
+var height_30 = Dimensions.get('window').height*0.3; //30% height
 
-var state = {
-  isModalVisible:false
+// Might use REDUX for global state management...
+
+class Home extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { open: false };
+    this.openModal1 = this.openModal1.bind(this);
+    this.openModal2 = this.openModal2.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+  }
+  openModal1() {
+    this.setState({ open: true });
+    this.setState({ address: true });
+    this.setState({ detail: false });
+  }
+  openModal2() {
+    this.setState({ open: true });
+    this.setState({ detail: true });
+    this.setState({ address: false });
+  }
+  closeModal() {
+    this.setState({ open: false });
   }
 
-openModal = () =>{
-  this.setState({
-  isModalVisible:true
-  })
-}
+  render() {
+    return (
+      <View style={styles.container}>
 
-// SEE: https://medium.com/@alexb72/how-to-create-your-first-modal-popup-for-your-react-native-app-5e50b24d3df1
+        <Header style={styles.header}></Header>
 
-function Home(props) {
-  return (
-    <View style={styles.container}>
+        <Popup
+          open={this.state.open}
+          closeOnDocumentClick
+          onClose={this.closeModal}
+        >
+          { this.state.address ? <Addresswin style={styles.addresswin}></Addresswin> : null }
+          { this.state.detail ? <Popupwin style={styles.popupwin}></Popupwin> : null }
+        </Popup>
 
-      <Header style={styles.header}></Header>
-      
-      <View style={styles.Row}>
-          <Text style={styles.container_text}>Container</Text>
-          <View style={styles.rowfiller}></View>
-          <Text style={styles.sortieren}>Sortieren:</Text>
-          <Text style={styles.neuesteZuerst}>Neueste zuerst</Text>
-      </View>
-
-      <ScrollView style={styles.containerList}>
-        <Container style={styles.containerComponent}></Container>
-      </ScrollView>
-      
-      <TouchableOpacity onPress={()=>this.openModal()}>
-        <Plus style={styles.plus}></Plus>
-      </TouchableOpacity>
-
-      <Modal isVisible={this.state.isModalVisible} style={{backgroundColor:'white'}}>>
-        <View style={{ flex: 1 }}>
-          <Text>This is the modal content for now!</Text>
+        <View style={styles.Row}>
+            <Text style={styles.container_text}>Container</Text>
+            <View style={styles.rowfiller}></View>
+            <Text style={styles.sortieren}>Sortieren:</Text>
+            <Text style={styles.neuesteZuerst}>Neueste zuerst</Text>
         </View>
-      </Modal>
 
-    </View>
-  );
+        <ScrollView style={styles.containerList}>
+          <TouchableOpacity onPress={this.openModal2}>
+            <Container style={styles.containerComponent}></Container>
+          </TouchableOpacity>
+        </ScrollView>
+
+        <TouchableOpacity onPress={this.openModal1} style={styles.plus}>
+          <Plus style={styles.plus}></Plus>
+        </TouchableOpacity>
+
+      </View>
+    
+    );}
 }
 
 const styles = StyleSheet.create({
@@ -60,7 +86,8 @@ const styles = StyleSheet.create({
   containerList: {
     flex: 1,
     alignSelf: "center",
-    padding: 30
+    padding: 30,
+    zIndex:2,
   },
 
   containerComponent: {
@@ -110,7 +137,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginRight: 20,
     alignSelf: "flex-end"
-  }
+  },
+
+  addresswin: {
+    height: height_30,
+    width: width_50,
+    alignSelf: "center",
+  },
+  addresswin: {
+    height: height_50,
+    width: width_50,
+    alignSelf: "center",
+  },
 });
 
 export default Home;
