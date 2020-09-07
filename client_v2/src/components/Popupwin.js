@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
+
 import TempButton from "./TempButton";
 import HumidityButton from "./HumidityButton";
+import Chart from "./Chart";
+
 
 class Popupwin extends React.Component {
   constructor(props) {
@@ -10,68 +13,66 @@ class Popupwin extends React.Component {
   }
 
   render() {
-  return (
-    <View style={styles.container}>
-      <View style={styles.rect}>
-        <View style={styles.Row1}>
+    return (
+      <View style={styles.container}>
+        <View style={styles.rect}>
+          <View style={styles.Row1}>
+            <Image
+              source={require("../assets/images/Maersk1.png")}
+              resizeMode="contain"
+              style={styles.company}
+            ></Image>
+            <View style={styles.Row1Column1}>
+              <Text style={styles.container_heading}>Container</Text>
+              <Text style={styles.container_name}>MWBNB564534884a</Text>
+            </View>
+            <View style={styles.Row1Column2}>
+              <Text style={styles.buchungsnummer_heading}>Buchungsnummer</Text>
+              <Text style={styles.buchungsnummer}>35646794533</Text>
+            </View>
+          </View>
+
+          <View style={styles.Row2}>
+            <TempButton style={styles.tempButton} temp={this.props.containerData.Temperature}></TempButton>
+            <HumidityButton style={styles.humidityButton} humidity={this.props.containerData.Humidity}></HumidityButton>
+          </View>
+
+          <Chart style={styles.graph} />
+
           <Image
-            source={require("../assets/images/Maersk1.png")}
+            source={require("../assets/images/001-lettuce.png")}
             resizeMode="contain"
-            style={styles.company}
+            style={styles.image_lettuce}
           ></Image>
-          <View style={styles.Row1Column1}>
-            <Text style={styles.container_heading}>Container</Text>
-            <Text style={styles.container_name}>MWBNB564534884a</Text>
-          </View>
-          <View style={styles.Row1Column2}>
-            <Text style={styles.buchungsnummer_heading}>Buchungsnummer</Text>
-            <Text style={styles.buchungsnummer}>35646794533</Text>
-          </View>
-        </View>
-
-        <View style={styles.Row2}>
-          <TempButton style={styles.tempButton} temp={this.props.containerData.Temperature}></TempButton>
-          <HumidityButton style={styles.humidityButton} humidity={this.props.containerData.Humidity}></HumidityButton>
-        </View>
-
-        <View style={styles.graph}>
-          <Text>Graph here</Text>
-        </View>
-
-        <Image
-          source={require("../assets/images/001-lettuce.png")}
-          resizeMode="contain"
-          style={styles.image_lettuce}
-        ></Image>
-        <View style={styles.Row3}>
-          <Image
-            source={require("../assets/images/003-snowflake.png")}
-            resizeMode="contain"
-            style={styles.image_frozen}
-          ></Image>
-          <View style={styles.Content_Stack}>
-            <Text style={styles.blattsalat}>Blattsalat</Text>
-            <Text style={styles.gefroren}>gefroren</Text>
-          </View>
-        </View>
-
-        <View style={styles.Row4}>
-          <View style={styles.Row4Column1}>
-            <Text style={styles.abfahrt}>Abfahrt</Text>
-            <Text style={styles.abfahrt_ort}>Hamburg, Deutschland</Text>
-            <Text style={styles.abfahrt_zeit}>26. September 2020, 08:32 Uhr</Text>
+          <View style={styles.Row3}>
+            <Image
+              source={require("../assets/images/003-snowflake.png")}
+              resizeMode="contain"
+              style={styles.image_frozen}
+            ></Image>
+            <View style={styles.Content_Stack}>
+              <Text style={styles.blattsalat}>Blattsalat</Text>
+              <Text style={styles.gefroren}>gefroren</Text>
+            </View>
           </View>
 
-          <View style={styles.Row4Column2}>
-            <Text style={styles.ankunft}>Ankunft</Text>
-            <Text style={styles.ankunft_ort}>Rotterdam, Niederlande</Text>
-            <Text style={styles.ankunft_zeit}>27. September 2020, 15:53 Uhr</Text>
-          </View>
-        </View>
+          <View style={styles.Row4}>
+            <View style={styles.Row4Column1}>
+              <Text style={styles.abfahrt}>Abfahrt</Text>
+              <Text style={styles.abfahrt_ort}>Hamburg, Deutschland</Text>
+              <Text style={styles.abfahrt_zeit}>26. September 2020, 08:32 Uhr</Text>
+            </View>
 
+            <View style={styles.Row4Column2}>
+              <Text style={styles.ankunft}>Ankunft</Text>
+              <Text style={styles.ankunft_ort}>Rotterdam, Niederlande</Text>
+              <Text style={styles.ankunft_zeit}>27. September 2020, 15:53 Uhr</Text>
+            </View>
+          </View>
+
+        </View>
       </View>
-    </View>
-  );}
+    );}
 }
 
 const styles = StyleSheet.create({

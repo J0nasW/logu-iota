@@ -7,7 +7,7 @@ class HumidityButton extends React.Component{
 
     constructor(props) {
       super(props);
-      this.state = { temp: '' };
+      this.state = { humidity: '' };
     }
   
     render() {
