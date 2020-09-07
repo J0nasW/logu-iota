@@ -3,7 +3,16 @@ import { StyleSheet, View, Text } from "react-native";
 
 import { Chart } from 'react-charts'
 
-const data = React.useMemo(
+  
+
+class IOTA_Chart extends React.Component{
+
+  constructor(props) {
+    super(props);
+    this.state = { temp: '' };
+  }
+
+  data = React.useMemo(
     () => [
       {
         label: 'Temperature',
@@ -29,10 +38,10 @@ const data = React.useMemo(
     []
   )
 
-  const tooltipAlign = alignAuto;
-  const tooltipAnchor = anchorClosest
+  tooltipAlign = alignAuto;
+  tooltipAnchor = anchorClosest
 
-  const axes = React.useMemo(
+  axes = React.useMemo(
     () => [
       { primary: true, position: 'bottom', type: 'time' },
       { position: 'left', type: 'linear' }
@@ -40,20 +49,13 @@ const data = React.useMemo(
     []
   )
 
-  const tooltip = React.useMemo(
+  tooltip = React.useMemo(
     () => ({
       align: tooltipAlign,
       anchor: tooltipAnchor
     }),
     [tooltipAlign, tooltipAnchor]
   )
-
-class Chart extends React.Component{
-
-  constructor(props) {
-    super(props);
-    this.state = { temp: '' };
-  }
 
   render() {
   return (
@@ -120,4 +122,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Chart;
+export default IOTA_Chart;

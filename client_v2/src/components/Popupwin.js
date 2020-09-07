@@ -3,7 +3,7 @@ import { StyleSheet, View, Image, Text } from "react-native";
 
 import TempButton from "./TempButton";
 import HumidityButton from "./HumidityButton";
-import Chart from "./Chart";
+import IOTA_Chart from "./Chart";
 
 
 class Popupwin extends React.Component {
@@ -37,7 +37,7 @@ class Popupwin extends React.Component {
             <HumidityButton style={styles.humidityButton} humidity={this.props.containerData.Humidity}></HumidityButton>
           </View>
 
-          <Chart style={styles.graph} />
+          <IOTA_Chart style={styles.graph} />
 
           <Image
             source={require("../assets/images/001-lettuce.png")}

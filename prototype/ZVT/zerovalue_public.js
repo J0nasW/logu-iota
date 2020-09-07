@@ -75,7 +75,7 @@ const generateJSON = function() {
     const arrival = "ROT";
     const content = "Blattsalat";
     const freeze = "ja";
-    const json = {"Temperature": temperature, "Humidity": humidity, "dateTime": dateTime, container: "container", booking_nr: "booking_nr", departure:"departure", arrival:"arrival", content:"content", freeze:"freeze"};
+    const json = {"Temperature": temperature, "Humidity": humidity, "dateTime": dateTime, "container": container, "booking_nr": booking_nr, "departure": departure, "arrival": arrival, "content": content, "freeze": freeze};
     return json;
 }
 
