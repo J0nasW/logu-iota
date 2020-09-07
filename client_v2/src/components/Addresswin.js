@@ -1,11 +1,28 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, form, input } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 
-function Addresswin(props) {
+class Addresswin extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = { address: '' };
+  }
+ 
+  handleChange = event => {
+    this.setState({ address: event.target.value });
+  };
+  
+  closeModal() {
+    this.setState({ open: false });
+  }
+
+
+  render() {
+
   return (
-    <View style={[styles.container, props.style]}>
+    <View style={styles.container}>
       <View style={styles.rect}>
         <Text style={styles.adresse}>Adresse:</Text>
         <View style={styles.Row}>
@@ -13,13 +30,21 @@ function Addresswin(props) {
             <Icon name="question" style={styles.icon}></Icon>
           </View>
           <View style={styles.address_text}></View>
+          <form>
+            <input 
+              type="text"
+              name="address"
+              value={this.state.address}
+              onChange={this.handleChange}
+            />
+          </form>
         </View>
-          <TouchableOpacity style={styles.button_green}>
+          <TouchableOpacity style={styles.button_green} onPress={this.closeModal}>
             <Text style={styles.los}>Los</Text>
           </TouchableOpacity>
       </View>
     </View>
-  );
+  );}
 }
 
 const styles = StyleSheet.create({

@@ -1,10 +1,17 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
 import TempButton from "./TempButton";
+import HumidityButton from "./HumidityButton";
 
-function Popupwin(props) {
+class Popupwin extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { containerData: '' };
+  }
+
+  render() {
   return (
-    <View style={[styles.container, props.style]}>
+    <View style={styles.container}>
       <View style={styles.rect}>
         <View style={styles.Row1}>
           <Image
@@ -23,7 +30,8 @@ function Popupwin(props) {
         </View>
 
         <View style={styles.Row2}>
-          <TempButton style={styles.tempButton}></TempButton>
+          <TempButton style={styles.tempButton} temp={this.props.containerData.Temperature}></TempButton>
+          <HumidityButton style={styles.humidityButton} humidity={this.props.containerData.Humidity}></HumidityButton>
         </View>
 
         <View style={styles.graph}>
@@ -63,7 +71,7 @@ function Popupwin(props) {
 
       </View>
     </View>
-  );
+  );}
 }
 
 const styles = StyleSheet.create({
@@ -127,6 +135,12 @@ const styles = StyleSheet.create({
     tempButton: {
       height: 60,
       width: 280,
+      marginRight: 20
+    },
+    humidityButton: {
+      height: 60,
+      width: 280,
+      marginLeft: 20
     },
 
 

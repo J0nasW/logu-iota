@@ -69,6 +69,12 @@ const generateJSON = function() {
     const temperature = sensorResult.temperature.toFixed(1);
     const humidity = sensorResult.humidity.toFixed(1);
     const dateTime = moment().utc().format('DD/MM/YYYY hh:mm:ss');
+    const container = "MWBNB564534884a";
+    const booking_nr = "35646794533";
+    const departure = "HAM";
+    const arrival = "ROT";
+    const content = "Blattsalat";
+    const freeze = "ja";
     const json = {"Temperature": temperature, "Humidity": humidity, "dateTime": dateTime};
     return json;
 }

@@ -3,14 +3,14 @@ import { StyleSheet, View, Text } from "react-native";
 import Svg, { Ellipse } from "react-native-svg";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-class TempButton extends React.Component{
+class HumidityButton extends React.Component{
 
-  constructor(props) {
-    super(props);
-    this.state = { temp: '' };
-  }
-
-  render() {
+    constructor(props) {
+      super(props);
+      this.state = { temp: '' };
+    }
+  
+    render() {
   return (
     <View style={styles.container}>
       <View style={styles.rect2}>
@@ -27,11 +27,11 @@ class TempButton extends React.Component{
                 ry={30}
               ></Ellipse>
             </Svg>
-            <Icon name="temperature-celsius" style={styles.icon}></Icon>
+            <Icon name="water-percent" style={styles.icon}></Icon>
           </View>
           <View style={styles.liveTemperaturColumn}>
-            <Text style={styles.liveTemperatur}>LIVE: Temperatur</Text>
-            <Text style={styles.liveTemperatur1}>{this.props.temp} °C</Text>
+            <Text style={styles.liveTemperatur}>LIVE: Luftfeuchtigkeit</Text>
+            <Text style={styles.liveTemperatur1}>{this.props.humidity} %</Text>
           </View>
         </View>
       </View>
@@ -42,9 +42,9 @@ class TempButton extends React.Component{
 const styles = StyleSheet.create({
   container: {},
   rect2: {
-    width: 280,
+    width: 300,
     height: 60,
-    backgroundColor: "rgba(45,156,219,1)",
+    backgroundColor: "rgba(0, 140, 149, 1)",
     borderRadius: 100
   },
   ellipse: {
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     fontSize: 25
   },
   liveTemperaturColumn: {
-    width: 107,
+    width: 150,
     marginLeft: 11,
     marginTop: 7,
     marginBottom: 6
@@ -89,4 +89,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default TempButton;
+export default HumidityButton;

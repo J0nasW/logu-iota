@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import Svg, { Ellipse } from "react-native-svg";
 import Icon from "react-native-vector-icons/Feather";
 
-function Plus(props) {
+function Reload(props) {
   return (
     <View style={[styles.container, props.style]}>
       <View style={styles.ellipseStack}>
@@ -11,14 +11,14 @@ function Plus(props) {
           <Ellipse
             stroke="rgba(230, 230, 230,1)"
             strokeWidth={0}
-            fill="rgba(39,144,84,1)"
+            fill="rgba(1,66,137,1)"
             cx={42}
             cy={42}
             rx={42}
             ry={42}
           ></Ellipse>
         </Svg>
-        <Icon name="plus" style={styles.icon}></Icon>
+        <Icon name="package" style={styles.icon}></Icon>
       </View>
     </View>
   );
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     color: "rgba(255,255,255,1)",
     fontSize: 40,
     left: 10,
-    top: 9
+    top: 8
   },
   ellipseStack: {
     width: 60,
@@ -45,4 +45,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Plus;
+export default Reload;
