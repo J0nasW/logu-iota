@@ -11,7 +11,7 @@ class Popupwin extends React.Component {
     super(props);
     this.state = { containerData: '' };
   }
-
+//<IOTA_Chart style={styles.graph} />
   render() {
     return (
       <View style={styles.container}>
@@ -24,11 +24,11 @@ class Popupwin extends React.Component {
             ></Image>
             <View style={styles.Row1Column1}>
               <Text style={styles.container_heading}>Container</Text>
-              <Text style={styles.container_name}>MWBNB564534884a</Text>
+              <Text style={styles.container_name}>{this.props.containerData.container}</Text>
             </View>
             <View style={styles.Row1Column2}>
               <Text style={styles.buchungsnummer_heading}>Buchungsnummer</Text>
-              <Text style={styles.buchungsnummer}>35646794533</Text>
+              <Text style={styles.buchungsnummer}>{this.props.containerData.booking_nr}</Text>
             </View>
           </View>
 
@@ -37,7 +37,10 @@ class Popupwin extends React.Component {
             <HumidityButton style={styles.humidityButton} humidity={this.props.containerData.Humidity}></HumidityButton>
           </View>
 
-          <IOTA_Chart style={styles.graph} />
+          
+          <View style={styles.graph}>
+            <Text>Graph hier einfügen...</Text>
+          </View>
 
           <Image
             source={require("../assets/images/001-lettuce.png")}
@@ -51,7 +54,7 @@ class Popupwin extends React.Component {
               style={styles.image_frozen}
             ></Image>
             <View style={styles.Content_Stack}>
-              <Text style={styles.blattsalat}>Blattsalat</Text>
+              <Text style={styles.blattsalat}>{this.props.containerData.content}</Text>
               <Text style={styles.gefroren}>gefroren</Text>
             </View>
           </View>
