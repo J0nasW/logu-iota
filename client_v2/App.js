@@ -4,18 +4,36 @@ import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
-import Home from "./src/screens/Home";
-import Popup from "./src/screens/Popup";
 
-const DrawerNavigation = createDrawerNavigator({ Home: Home, Popup: Popup });
+import Home from "./src/screens/Home";
+
+// Getting REDUX working ------------------------------------------------
+import {createStore} from "redux";
+import { Provider } from 'react-redux'
+
+import rootReducer from './src/reducers'
+
+const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+
+// STORE - Holds all the data for our application (globalized state)
+
+// ACTION - Set state
+
+// REDUCER - How actions transform the current state into the next state
+
+// DISPATCH - Send action to reducer, reducer checks and action gets performed on the store
+
+// ----------------------------------------------------------------------
+
+
+const DrawerNavigation = createDrawerNavigator({ Home: Home });
 
 const StackNavigation = createStackNavigator(
   {
     DrawerNavigation: {
       screen: DrawerNavigation
     },
-    Home: Home,
-    Popup: Popup
+    Home: Home
   },
   {
     headerMode: "none"
@@ -35,7 +53,7 @@ function App() {
       />
     );
   } else {
-    return isLoadingComplete ? <AppContainer /> : <AppLoading />;
+    return isLoadingComplete ? <Provider store={store}> <AppContainer /> </Provider> : <AppLoading />;
   }
 }
 async function loadResourcesAsync() {

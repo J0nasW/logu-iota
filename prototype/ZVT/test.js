@@ -9,8 +9,11 @@ const iota = iotaLibrary.composeAPI({
   provider: 'https://nodes.comnet.thetangle.org:443'
 })
 
+var PASSPHRASE = ":FMm-@!cyA2b_>JEQ(aR8pTd}KP9WhJ3PC#%9EP,"; //Passphrase to encrypt the IOTA JSON Message.
+var encryptor = require('simple-encryptor')(PASSPHRASE);
+
 const address =
-  'HDSLPMUBBJSRUEKGTKZXUZZJFHIVGDPMFNUZYYBAWNUKLUCJT9OKNYXWUSOBRXCXNMJS99KTSIMQTKPUDPVBFJ9KVW'
+  'HOYXQD9EPEDDKGLVAUMGDJERRYTIZOP9SISE9XGBQEQDEQWKOJMWHVWMXZEMDKDJQEUBOSISZWGZIWFOC'
 
 
 iota
@@ -28,9 +31,13 @@ iota
     console.log('Encoded message:')
     console.log(data)
 
+    var data_decrypted = encryptor.decrypt(data);
+    console.log('Encrypted message:')
+    console.log(data_decrypted);
+
     //Parse JSON
     // preserve newlines, etc - use valid JSON
-    data = data.replace(/\\n/g, "\\n")  
+    data_decrypted = data_decrypted.replace(/\\n/g, "\\n")  
     .replace(/\\'/g, "\\'")
     .replace(/\\"/g, '\\"')
     .replace(/\\&/g, "\\&")
@@ -39,8 +46,8 @@ iota
     .replace(/\\b/g, "\\b")
     .replace(/\\f/g, "\\f");
     // remove non-printable and other non-valid JSON chars
-    data = data.replace(/[\u0000-\u0019]+/g,""); 
-    var payload = JSON.parse(data);
+    data_decrypted = data_decrypted.replace(/[\u0000-\u0019]+/g,""); 
+    var payload = JSON.parse(data_decrypted);
 
 
     //var payload = JSON.parse(data);

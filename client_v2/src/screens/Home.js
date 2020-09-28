@@ -4,17 +4,19 @@ import { Input } from 'react-native-elements';
 import Popup from "reactjs-popup";
 import Icon from "react-native-vector-icons/FontAwesome";
 
+// Importing multiple components like the header or popup's
 import Header from "../components/Header";
 import Container from "../components/Container";
 import Plus from "../components/Plus";
 import Reload from "../components/reload"
-
-//import Addresswin from "../components/Addresswin";
+import Addresswin from "../components/Addresswin";
 import Popupwin from "../components/Popupwin";
 
+// Importing IOTA Libraries
 import * as IotaProvider from '@iota/core';
 import * as Converter from '@iota/converter';
 
+// Defining Browser width and height for styling
 var width = Dimensions.get('window').width; //full width
 var width_80 = Dimensions.get('window').width*0.8; //80% width
 var width_50 = Dimensions.get('window').width*0.5; //50% width
@@ -24,8 +26,6 @@ var height_50 = Dimensions.get('window').height*0.5; //50% height
 var height_30 = Dimensions.get('window').height*0.3; //30% height
 
 // Might use REDUX for global state management...
-
-var IotaAddressContext = '';
 
 class Home extends React.Component {
 
@@ -38,30 +38,33 @@ class Home extends React.Component {
     this.handleData = this.handleData.bind(this);
   }
 
-  handleChange = event => {
-    this.setState({ address_string: event.target.value });
-    IotaAddressContext = event.target.value;
-  };
-
+  // Modal 1 = Inserting IOTA address popup
   openModal1() {
     this.setState({ open: true });
     this.setState({ address: true });
     this.setState({ detail: false });
   }
+
+  // Modal 2 = Display details on added containers popup
   openModal2() {
     this.setState({ open: true });
     this.setState({ detail: true });
     this.setState({ address: false });
   }
+
+  // Global state to close any popup with a button or function
   closeModal() {
     this.setState({ open: false });
   }
 
+  // Function to collect IOTA data from a given address
   async handleData() {
     
       //alert('IOTA Reload started!');
-    
-      const address = IotaAddressContext.toString();
+
+      alert(container_address)
+
+      const address = container_address.toString();
     
       var iota = IotaProvider.composeAPI({
         provider: 'https://nodes.comnet.thetangle.org:443'
@@ -103,18 +106,9 @@ class Home extends React.Component {
     
   }
 
-  render() {
-    return (
-      <View style={styles.container}>
-
-        <Header style={styles.header}></Header>
-
-        <Popup
-          open={this.state.open}
-          closeOnDocumentClick
-          onClose={this.closeModal}
-        >
-          { this.state.address ? 
+  /**
+    
+    { this.state.address ? 
           
             <View style={styles.rect}>
             <Text style={styles.adresse}>Adresse:</Text>
@@ -136,6 +130,21 @@ class Home extends React.Component {
             </View>
 
           : null }
+   
+   */
+
+  render() {
+    return (
+      <View style={styles.container}>
+
+        <Header style={styles.header}></Header>
+
+        <Popup
+          open={this.state.open}
+          closeOnDocumentClick
+          onClose={this.closeModal}
+        >
+          { this.state.address ? <Addresswin style={styles.addresswin} handleData={this.handleData}></Addresswin> : null }
           { this.state.detail ? <Popupwin style={styles.popupwin} containerData={this.state.payload}></Popupwin> : null }
         </Popup>
 
