@@ -2,15 +2,23 @@
 import * as IotaProvider from '@iota/core';
 import * as Converter from '@iota/converter';
 
+// Store Things
+var store = require('store')
+
 // Function to collect IOTA data from a given address
-async function fetchIOTA(container_address) {
+export async function fetchIOTA() {
     
-    //alert('IOTA Reload started!');
+    alert('IOTA Reload started!');
+
+    // Getting the current Container Address
+    var ContainerCount = store.get("ContainerCount").count
+    const address = store.get("container" + ContainerCount).address;
+
+    // Getting the correspondent passphrase
+    var passphrase = store.get("container" + ContainerCount).passphrase;
   
-    alert(container_address)
-  
-    const address = container_address.toString();
-  
+    alert(address)
+
     var iota = IotaProvider.composeAPI({
       provider: 'https://nodes.comnet.thetangle.org:443'
     });
@@ -42,8 +50,13 @@ async function fetchIOTA(container_address) {
       //alert("Temperature:" + payload.Temperature);
       //alert("Humidity:" + payload.Humidity);
       //alert("Timestamp:" + payload.dateTime);
-      this.setState({payload: payload});
-      this.setState({container1: true});
+      //this.setState({payload: payload});
+      //this.setState({container1: true});
+
+      // Setting Store Object container<count>_payload
+      store.set("container" + ContainerCount + "_payload", {payload:payload})
+
+      alert(JSON.stringify(store.get("container" + ContainerCount + "_payload").payload))
   
     } catch (error) {
         alert("Ein Fehler wurde festgestellt: " + error);

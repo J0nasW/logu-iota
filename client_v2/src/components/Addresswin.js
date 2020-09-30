@@ -3,22 +3,27 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Input, Button, Tooltip } from 'react-native-elements';
 
-// REDUX MAGIC
-import { connect } from 'react-redux'
-import { addContainer } from '../actions'
+import { fetchIOTA } from "../functions/fetchIOTA";
 
+// Store Things
+var store = require('store')
 class Addresswin extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       address_string: '',
+      passphrase: '',
       protocoll: '',
       loading: false };
   }
 
-  handleChange = event => {
+  handleChangeAddress = event => {
     this.setState({ address_string: event.target.value })
+  };
+
+  handleChangePassphrase = event => {
+    this.setState({ passphrase: event.target.value })
   };
 
   handleInput = () => {
@@ -28,12 +33,24 @@ class Addresswin extends React.Component {
     let address = this.state.address_string;
     let address_length = this.state.address_string.length;
 
-    const { dispatch } = this.props;  
+    let passphrase = this.state.passphrase;
 
+    // Set ContainerCount 1 up
+    var ContainerCount = store.get("ContainerCount").count
+    ContainerCount = ContainerCount + 1;
+    store.set("ContainerCount", { count:ContainerCount })
+
+    // Checking if the address belongs to IOTA
     if (address_length > 50) {
       this.setState({ protocoll: "iota" });
+      let protocoll = this.state.protocoll;
       alert("Detected IOTA Protocoll - will fetch data.");
-      this.props.store.dispatch(addContainer(address));
+      store.set("container" + ContainerCount, { address:address, protocoll:protocoll, passphrase:passphrase })
+
+      // Fetch the IOTA Payload
+      fetchIOTA()
+
+      //alert(JSON.stringify(store.get("container" + ContainerCount).address))
     }
     else {
       alert("No valid Address or Protocoll not found.")
@@ -41,7 +58,7 @@ class Addresswin extends React.Component {
 
     setTimeout(()=>{
       this.setState({ loading:false })
-    }, 1000)
+    }, 2000)
 
   };
 
@@ -59,7 +76,13 @@ class Addresswin extends React.Component {
               <Input
                 placeholder='Container Adresse'
                 value={this.state.address_string}
-                onChange={this.handleChange}
+                onChange={this.handleChangeAdress}
+                inputContainerStyle={styles.address_text}
+              />
+              <Input
+                placeholder='Container Passphrase'
+                value={this.state.passphrase}
+                onChange={this.handleChangePassphrase}
                 inputContainerStyle={styles.address_text}
               />
           </View>
@@ -140,4 +163,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(null, { addContainer })(Addresswin);
+export default Addresswin;

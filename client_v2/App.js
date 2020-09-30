@@ -7,24 +7,8 @@ import * as Font from "expo-font";
 
 import Home from "./src/screens/Home";
 
-// Getting REDUX working ------------------------------------------------
-import {createStore} from "redux";
-import { Provider } from 'react-redux'
-
-import rootReducer from './src/reducers'
-
-const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
-
-// STORE - Holds all the data for our application (globalized state)
-
-// ACTION - Set state
-
-// REDUCER - How actions transform the current state into the next state
-
-// DISPATCH - Send action to reducer, reducer checks and action gets performed on the store
-
-// ----------------------------------------------------------------------
-
+// Store Things
+var store = require('store')
 
 const DrawerNavigation = createDrawerNavigator({ Home: Home });
 
@@ -43,6 +27,8 @@ const StackNavigation = createStackNavigator(
 const AppContainer = createAppContainer(StackNavigation);
 
 function App() {
+  //Set Container Count to zero
+  store.set( "ContainerCount", { count:0 } );
   const [isLoadingComplete, setLoadingComplete] = useState(false);
   if (!isLoadingComplete) {
     return (
@@ -53,7 +39,7 @@ function App() {
       />
     );
   } else {
-    return isLoadingComplete ? <Provider store={store}> <AppContainer /> </Provider> : <AppLoading />;
+    return isLoadingComplete ? <AppContainer /> : <AppLoading />;
   }
 }
 async function loadResourcesAsync() {
