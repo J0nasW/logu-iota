@@ -73,10 +73,11 @@ class Addresswin extends React.Component {
             <View style={styles.company}>
               <Icon name="question" style={styles.icon}></Icon>
             </View>
+            <View style={styles.inputfields}>
               <Input
                 placeholder='Container Adresse'
                 value={this.state.address_string}
-                onChange={this.handleChangeAdress}
+                onChange={this.handleChangeAddress}
                 inputContainerStyle={styles.address_text}
               />
               <Input
@@ -85,8 +86,8 @@ class Addresswin extends React.Component {
                 onChange={this.handleChangePassphrase}
                 inputContainerStyle={styles.address_text}
               />
+            </View>
           </View>
-
           <Button
             title="Speichern"
             buttonStyle={styles.button_green}
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
     marginLeft: 150
   },
   Row_address: {
-    height: 75,
+    height: 150,
     flexDirection: "row",
     marginTop: 5,
     marginLeft: 40,

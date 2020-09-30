@@ -13,6 +13,11 @@ var http = require('http');
 // DHT11 Packages
 var sensor = require("node-dht-sensor");
 
+// Encryption
+var keygen = require("keygenerator");
+var PASSPHRASE = keygen._(); //Passphrase to encrypt the IOTA JSON Message.
+var encryptor = require('simple-encryptor')(PASSPHRASE);
+
 // Other Packages
 const fsLibrary  = require('fs'); //Load File System Package
 const chalk = require('chalk'); // Nice Terminal Output
@@ -24,7 +29,7 @@ const provider = 'https://nodes.comnet.thetangle.org:443' //Using the public DEV
 const depth = 3 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
 const securityLevel = 2 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
 const minWeight = 10 //Optional minimum number of trailing zeros in transaction hash. This is used by attachToTangle function to search for a valid nonce. Currently is 14 on mainnet & spamnnet and 9 on most other devnets. Null value will set minWeightMagnitude to 9
-const TIMEINTERVAL  = 300; // In seconds.
+const TIMEINTERVAL  = 30; // In seconds.
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 // FUNCTIONS -----------------------------------------------------------------------------------------------------------------------------------
@@ -75,8 +80,10 @@ const generateJSON = function() {
     const arrival = "ROT";
     const content = "Blattsalat";
     const freeze = "ja";
-    const json = {"Temperature": temperature, "Humidity": humidity, "dateTime": dateTime, "container": container, "booking_nr": booking_nr, "departure": departure, "arrival": arrival, "content": content, "freeze": freeze};
-    return json;
+    var json = {"Temperature": temperature, "Humidity": humidity, "dateTime": dateTime, "container": container, "booking_nr": booking_nr, "departure": departure, "arrival": arrival, "content": content, "freeze": freeze};
+    var encrypted_json = encryptor.encrypt(json);
+    console.log(encrypted_json);
+    return encrypted_json;
 }
 
 const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
@@ -121,6 +128,7 @@ var server = http.createServer(function (request, response) {
   response.write("The current Time Interval for publishing transactions is: " + TIMEINTERVAL + " seconds.\n");
   response.write("The used seed is: " + seed + "\n");
   response.write("The used address is: " + IOTAaddress + "\n\n");
+  response.write("The used Passphrase is: " + PASSPHRASE + "\n\n");
   response.write("Go to the COMNET Explorer: https://comnet.thetangle.org/address/" + IOTAaddress);
   response.end();
 });
@@ -132,10 +140,10 @@ console.log("Server is running at http://127.0.0.1:8000/");
 const publish = async packet => {
   // Define a message to send.
   // This message must include only ASCII characters.
-  const json = JSON.stringify(generateJSON()); // Get a JSON Message
+  const json = generateJSON(); // Get a JSON Message
   //const json = JSON.stringify({"message": "Hello world"});
   const messageInTrytes = Converter.asciiToTrytes(json); // Convert the message to trytes
-  console.log(chalk.white("Your JSON is: " + JSON.stringify(json)));
+  console.log(chalk.white("Your JSON is: " + json));
 
   // Define a zero-value transaction object
   // that sends the message to the address

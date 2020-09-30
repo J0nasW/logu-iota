@@ -7,7 +7,7 @@ import * as Font from "expo-font";
 
 import Home from "./src/screens/Home";
 
-// Store Things
+// Store Things - https://github.com/marcuswestin/store.js
 var store = require('store')
 
 const DrawerNavigation = createDrawerNavigator({ Home: Home });

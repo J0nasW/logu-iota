@@ -144,7 +144,7 @@ class Home extends React.Component {
           closeOnDocumentClick
           onClose={this.closeModal}
         >
-          { this.state.address ? <Addresswin style={styles.addresswin} handleData={this.handleData}></Addresswin> : null }
+          { this.state.address ? <Addresswin style={styles.addresswin}></Addresswin> : null }
           { this.state.detail ? <Popupwin style={styles.popupwin} containerData={this.state.payload}></Popupwin> : null }
         </Popup>
 
@@ -242,68 +242,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
     alignSelf: "flex-end"
   },
-
-
-  // STYLES FOR ADDRESS POPUP
-
-  rect: {
-    backgroundColor: "rgba(255,255,255,1)",
-  },
-  adresse: {
-    fontFamily: "roboto-regular",
-    color: "rgba(119,119,119,1)",
-    fontSize: 22,
-    marginTop: 40,
-    marginLeft: 150
-  },
-  Row_address: {
-    height: 75,
-    flexDirection: "row",
-    marginTop: 5,
-    marginLeft: 40,
-  },
-  company: {
-    width: 75,
-    height: 75,
-    borderWidth: 3,
-    borderColor: "rgba(155,155,155,1)",
-    borderRadius: 25
-  },
-  icon: {
-    color: "rgba(128,128,128,1)",
-    fontSize: 50,
-    height: 50,
-    width: 30,
-    marginTop: 5,
-    marginLeft: 19
-  },
-  address_text: {
-    width: 775,
-    height: 60,
-    //borderWidth: 1,
-    //borderColor: "rgba(155,155,155,1)",
-    //borderRadius: 25,
-    marginLeft: 25,
-    marginTop: 5,
-    paddingLeft: 10
-  },
-  button_green: {
-    width: 135,
-    height: 40,
-    borderRadius: 100,
-    backgroundColor: "rgba(39,144,84,1)",
-    marginTop: 15,
-    marginLeft: 775,
-    marginBottom: 20
-  },
-  los: {
-    fontFamily: "roboto-regular",
-    color: "rgba(255,255,255,1)",
-    fontSize: 30,
-    marginTop: 3,
-    alignSelf: "center"
-  }
-
 
 });
 

@@ -5,19 +5,17 @@ import * as Converter from '@iota/converter';
 // Store Things
 var store = require('store')
 
+// Getting the current Container Address
+var ContainerCount = store.get("ContainerCount").count
+const address = store.get("container" + ContainerCount).address;
+// Getting the correspondent passphrase
+var passphrase = store.get("container" + ContainerCount).passphrase;
+var encryptor = require('simple-encryptor')(passphrase);
+
 // Function to collect IOTA data from a given address
 export async function fetchIOTA() {
     
-    alert('IOTA Reload started!');
-
-    // Getting the current Container Address
-    var ContainerCount = store.get("ContainerCount").count
-    const address = store.get("container" + ContainerCount).address;
-
-    // Getting the correspondent passphrase
-    var passphrase = store.get("container" + ContainerCount).passphrase;
-  
-    alert(address)
+    //alert('IOTA Reload started!');    
 
     var iota = IotaProvider.composeAPI({
       provider: 'https://nodes.comnet.thetangle.org:443'
@@ -29,9 +27,18 @@ export async function fetchIOTA() {
       msg = msg.map(tx => tx.signatureMessageFragment);
       msg = msg.join('');
       msg = msg.slice(0,2186);
+
+      alert(msg)
   
+      // STILL ENCRYPTED
       var data = Converter.trytesToAscii(msg);
-  
+      var data = data.replace(/"([^"]+(?="))"/g, '$1');
+     
+      alert(data);
+      
+      // NOW DECRYPT IT - THIS STEP DOSENT WORK AT THE MOMENT...
+      data = encryptor.decrypt(data);
+
       //Parse JSON
       // preserve newlines, etc - use valid JSON
       data = data.toString().replace(/\\n/g, "\\n")  

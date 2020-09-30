@@ -31,6 +31,7 @@
     "react-navigation-drawer": "^2.5.1",
     "react-navigation-stack": "^2.8.3",
     "reactjs-popup": "^1.5.0",
+    "simple-encryptor": "^4.0.0",
     "store": "^2.0.12"
   },
   "devDependencies": {
