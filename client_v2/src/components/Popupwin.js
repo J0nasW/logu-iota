@@ -5,14 +5,19 @@ import TempButton from "./TempButton";
 import HumidityButton from "./HumidityButton";
 import IOTA_Chart from "./Chart";
 
+// Store Things
+var store = require('store');
+
 
 class Popupwin extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { containerData: '' };
+    this.state = { data: '' };
+    
   }
 //<IOTA_Chart style={styles.graph} />
   render() {
+    var payload = store.get(this.props.data).payload;
     return (
       <View style={styles.container}>
         <View style={styles.rect}>
@@ -24,17 +29,17 @@ class Popupwin extends React.Component {
             ></Image>
             <View style={styles.Row1Column1}>
               <Text style={styles.container_heading}>Container</Text>
-              <Text style={styles.container_name}>{this.props.containerData.container}</Text>
+              <Text style={styles.container_name}>{payload.container}</Text>
             </View>
             <View style={styles.Row1Column2}>
               <Text style={styles.buchungsnummer_heading}>Buchungsnummer</Text>
-              <Text style={styles.buchungsnummer}>{this.props.containerData.booking_nr}</Text>
+              <Text style={styles.buchungsnummer}>{payload.booking_nr}</Text>
             </View>
           </View>
 
           <View style={styles.Row2}>
-            <TempButton style={styles.tempButton} temp={this.props.containerData.Temperature}></TempButton>
-            <HumidityButton style={styles.humidityButton} humidity={this.props.containerData.Humidity}></HumidityButton>
+            <TempButton style={styles.tempButton} temp={payload.Temperature}></TempButton>
+            <HumidityButton style={styles.humidityButton} humidity={payload.Humidity}></HumidityButton>
           </View>
 
           
@@ -54,7 +59,7 @@ class Popupwin extends React.Component {
               style={styles.image_frozen}
             ></Image>
             <View style={styles.Content_Stack}>
-              <Text style={styles.blattsalat}>{this.props.containerData.content}</Text>
+              <Text style={styles.blattsalat}>{payload.content}</Text>
               <Text style={styles.gefroren}>gefroren</Text>
             </View>
           </View>

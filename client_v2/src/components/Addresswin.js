@@ -3,20 +3,29 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Input, Button, Tooltip } from 'react-native-elements';
 
-import { fetchIOTA } from "../functions/fetchIOTA";
+import fetchIOTA from "../functions/fetchIOTA";
 
 // Store Things
-var store = require('store')
+var store = require('store');
+
+//var updatePlugin = require('store/plugins/update');
+//store.addPlugin(updatePlugin);
 class Addresswin extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      name_string: '',
       address_string: '',
       passphrase: '',
       protocoll: '',
+      iota: false,
       loading: false };
   }
+
+  handleChangeName = event => {
+    this.setState({ name_string: event.target.value })
+  };
 
   handleChangeAddress = event => {
     this.setState({ address_string: event.target.value })
@@ -30,31 +39,36 @@ class Addresswin extends React.Component {
 
     this.setState({ loading:true })
 
+    // Set the container address from INPUT
     let address = this.state.address_string;
+    // Get the address length from address INPUT for protocoll detection
     let address_length = this.state.address_string.length;
-
+    // Set Passphrase for the container from INPUT
     let passphrase = this.state.passphrase;
+    // Set ContainerName from INPUT
+    let containerName = this.state.name_string;
 
-    // Set ContainerCount 1 up
-    var ContainerCount = store.get("ContainerCount").count
-    ContainerCount = ContainerCount + 1;
-    store.set("ContainerCount", { count:ContainerCount })
+    
+      // Set ContainerCount 1 up
+      
+      // Checking if the address belongs to IOTA
+      if (address_length > 50) {
 
-    // Checking if the address belongs to IOTA
-    if (address_length > 50) {
-      this.setState({ protocoll: "iota" });
-      let protocoll = this.state.protocoll;
-      alert("Detected IOTA Protocoll - will fetch data.");
-      store.set("container" + ContainerCount, { address:address, protocoll:protocoll, passphrase:passphrase })
+        // Container Count one up 
+        let ContainerCount = store.get("count").count
+        ContainerCount = ContainerCount + 1;
+        store.set("count", { count:ContainerCount }) 
 
-      // Fetch the IOTA Payload
-      fetchIOTA()
-
-      //alert(JSON.stringify(store.get("container" + ContainerCount).address))
-    }
-    else {
-      alert("No valid Address or Protocoll not found.")
-    }
+        this.setState({ protocoll: "iota" });
+        this.setState({ iota: true });
+        let protocoll = this.state.protocoll;
+        //alert("Detected IOTA Protocoll - will fetch data.");
+        store.set("container" + ContainerCount, { count:ContainerCount, name:containerName, address:address, protocoll:protocoll, passphrase:passphrase }); // Set all the important information for the current container to hand over to fetchIOTA()
+        fetchIOTA(); // Fetch the IOTA Payload and store it with the container information
+      }
+      else {
+        alert("No valid Address or Protocoll found.");
+      }
 
     setTimeout(()=>{
       this.setState({ loading:false })
@@ -74,6 +88,12 @@ class Addresswin extends React.Component {
               <Icon name="question" style={styles.icon}></Icon>
             </View>
             <View style={styles.inputfields}>
+            <Input
+                placeholder='Container Name'
+                value={this.state.name_string}
+                onChange={this.handleChangeName}
+                inputContainerStyle={styles.address_text}
+              />
               <Input
                 placeholder='Container Adresse'
                 value={this.state.address_string}
@@ -86,6 +106,11 @@ class Addresswin extends React.Component {
                 onChange={this.handleChangePassphrase}
                 inputContainerStyle={styles.address_text}
               />
+              {this.state.iota ? 
+              <Text style={styles.protocoll}>
+                IOTA Protocoll detected. Will fetch data...
+              </Text>
+              : null }
             </View>
           </View>
           <Button
@@ -112,7 +137,7 @@ const styles = StyleSheet.create({
     marginLeft: 150
   },
   Row_address: {
-    height: 150,
+    height: 250,
     flexDirection: "row",
     marginTop: 5,
     marginLeft: 40,
@@ -138,6 +163,11 @@ const styles = StyleSheet.create({
     //borderWidth: 1,
     //borderColor: "rgba(155,155,155,1)",
     //borderRadius: 25,
+    marginLeft: 25,
+    marginTop: 5,
+    paddingLeft: 10
+  },
+  protocoll: {
     marginLeft: 25,
     marginTop: 5,
     paddingLeft: 10

@@ -16,7 +16,7 @@ var sensor = require("node-dht-sensor");
 // Encryption
 var keygen = require("keygenerator");
 var PASSPHRASE = keygen._(); //Passphrase to encrypt the IOTA JSON Message.
-var encryptor = require('simple-encryptor')(PASSPHRASE);
+var CryptoAES = require('crypto-js/aes');
 
 // Other Packages
 const fsLibrary  = require('fs'); //Load File System Package
@@ -81,7 +81,7 @@ const generateJSON = function() {
     const content = "Blattsalat";
     const freeze = "ja";
     var json = {"Temperature": temperature, "Humidity": humidity, "dateTime": dateTime, "container": container, "booking_nr": booking_nr, "departure": departure, "arrival": arrival, "content": content, "freeze": freeze};
-    var encrypted_json = encryptor.encrypt(json);
+    var encrypted_json = CryptoAES.encrypt(JSON.stringify(json), PASSPHRASE).toString();
     console.log(encrypted_json);
     return encrypted_json;
 }

@@ -10,6 +10,12 @@ import Home from "./src/screens/Home";
 // Store Things - https://github.com/marcuswestin/store.js
 var store = require('store')
 
+/**
+store.set("currentName", { name:"init" });
+let initName = store.get("currentName").name;
+store.set(initName, { address:null, protocoll:null, passphrase:"ABCDEFGHIJKLMNOPQRSTUVWXYZ" });
+ */
+
 const DrawerNavigation = createDrawerNavigator({ Home: Home });
 
 const StackNavigation = createStackNavigator(
@@ -27,8 +33,7 @@ const StackNavigation = createStackNavigator(
 const AppContainer = createAppContainer(StackNavigation);
 
 function App() {
-  //Set Container Count to zero
-  store.set( "ContainerCount", { count:0 } );
+  store.set("count", { count: 0 })
   const [isLoadingComplete, setLoadingComplete] = useState(false);
   if (!isLoadingComplete) {
     return (

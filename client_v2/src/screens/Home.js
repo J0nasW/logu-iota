@@ -12,9 +12,8 @@ import Reload from "../components/reload"
 import Addresswin from "../components/Addresswin";
 import Popupwin from "../components/Popupwin";
 
-// Importing IOTA Libraries
-import * as IotaProvider from '@iota/core';
-import * as Converter from '@iota/converter';
+// Store Things
+var store = require('store');
 
 // Defining Browser width and height for styling
 var width = Dimensions.get('window').width; //full width
@@ -31,11 +30,10 @@ class Home extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { open: false, address_string: '', container1: false, payload: '' };
+    this.state = { open: false, address_string: '', container1: false, payload: '', container1: "container1" };
     this.openModal1 = this.openModal1.bind(this);
     this.openModal2 = this.openModal2.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.handleData = this.handleData.bind(this);
   }
 
   // Modal 1 = Inserting IOTA address popup
@@ -57,53 +55,9 @@ class Home extends React.Component {
     this.setState({ open: false });
   }
 
-  // Function to collect IOTA data from a given address
-  async handleData() {
-    
-      //alert('IOTA Reload started!');
-
-      alert(container_address)
-
-      const address = container_address.toString();
-    
-      var iota = IotaProvider.composeAPI({
-        provider: 'https://nodes.comnet.thetangle.org:443'
-      });
-      try {
-        let result = await iota.findTransactionObjects({ addresses: [address] });
-    
-        var msg = result.sort(function (a, b) { return b.timestamp - a.timestamp; });
-        msg = msg.map(tx => tx.signatureMessageFragment);
-        msg = msg.join('');
-        msg = msg.slice(0,2186);
-    
-        var data = Converter.trytesToAscii(msg);
-    
-        //Parse JSON
-        // preserve newlines, etc - use valid JSON
-        data = data.toString().replace(/\\n/g, "\\n")  
-        .replace(/\\'/g, "\\'")
-        .replace(/\\"/g, '\\"')
-        .replace(/\\&/g, "\\&")
-        .replace(/\\r/g, "\\r")
-        .replace(/\\t/g, "\\t")
-        .replace(/\\b/g, "\\b")
-        .replace(/\\f/g, "\\f");
-        // remove non-printable and other non-valid JSON chars
-        data = data.replace(/[\u0000-\u0019]+/g,"");
-        var payload = JSON.parse(data);
-        //alert("Got it!");
-        // Format: {"Temperature":"26.0","Humidity":"61.0","dateTime":"18/08/2020 12:09:18"}
-        //alert("Temperature:" + payload.Temperature);
-        //alert("Humidity:" + payload.Humidity);
-        //alert("Timestamp:" + payload.dateTime);
-        this.setState({payload: payload});
-        this.setState({container1: true});
-  
-      } catch (error) {
-          alert("Ein Fehler wurde festgestellt: " + error);
-      }
-    
+  flushData() {
+    store.clearAll();
+    store.set("count", { count: 0 })
   }
 
   /**
@@ -145,7 +99,7 @@ class Home extends React.Component {
           onClose={this.closeModal}
         >
           { this.state.address ? <Addresswin style={styles.addresswin}></Addresswin> : null }
-          { this.state.detail ? <Popupwin style={styles.popupwin} containerData={this.state.payload}></Popupwin> : null }
+          { this.state.detail ? <Popupwin style={styles.popupwin} data={this.state.container1}></Popupwin> : null }
         </Popup>
 
         <View style={styles.Row}>
@@ -156,14 +110,24 @@ class Home extends React.Component {
         </View>
 
         <ScrollView style={styles.containerList}>
-          {this.state.container1 ? 
+          {store.get("container1") ? 
+          <TouchableOpacity onPress={this.openModal2}>
+            <Container style={styles.containerComponent}></Container>
+          </TouchableOpacity>
+          : null }
+          {store.get("container2") ? 
+          <TouchableOpacity onPress={this.openModal2}>
+            <Container style={styles.containerComponent}></Container>
+          </TouchableOpacity>
+          : null }
+          {store.get("container3") ? 
           <TouchableOpacity onPress={this.openModal2}>
             <Container style={styles.containerComponent}></Container>
           </TouchableOpacity>
           : null }
         </ScrollView>
 
-        <TouchableOpacity onPress={this.handleData.bind(this)} style={styles.reload}>
+        <TouchableOpacity onPress={this.flushData} style={styles.reload}>
           <Reload style={styles.reload}></Reload>
         </TouchableOpacity>
 

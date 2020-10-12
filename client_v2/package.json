@@ -10,8 +10,11 @@
   },
   "dependencies": {
     "bootstrap": "^4.5.2",
+    "crypto-js": "^3.3.0",
     "expo": "^39.0.3",
+    "expo-cli": "^3.27.14",
     "expo-font": "~8.3.0",
+    "hybrid-crypto-js": "^0.2.4",
     "lodash": "~4.17.20",
     "react": "16.13.1",
     "react-bootstrap": "^1.3.0",
@@ -19,6 +22,7 @@
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.0.tar.gz",
     "react-native-animate-loading-button": "^1.0.3",
+    "react-native-crypto": "^2.2.0",
     "react-native-elements": "^2.3.2",
     "react-native-gesture-handler": "~1.7.0",
     "react-native-modal": "^11.5.6",
@@ -31,11 +35,10 @@
     "react-navigation-drawer": "^2.5.1",
     "react-navigation-stack": "^2.8.3",
     "reactjs-popup": "^1.5.0",
-    "simple-encryptor": "^4.0.0",
+    "simple-crypto-js": "^2.5.0",
     "store": "^2.0.12"
   },
   "devDependencies": {
-    "babel-plugin-module-resolver": "^4.0.0",
     "babel-preset-expo": "^8.3.0"
   }
 }
