@@ -1,11 +1,3 @@
-/*
-MODULES NEEDED FOR U-blox NEO 6M GPS Module
-
-npm install gps
-
-https://github.com/infusion/GPS.js
-*/
-
 const SerialPort = require("serialport");
 const SerialPortParser = require("@serialport/parser-readline");
 const GPS = require("gps");
