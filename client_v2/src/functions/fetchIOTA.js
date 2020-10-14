@@ -2,34 +2,23 @@
 import * as IotaProvider from '@iota/core';
 import * as Converter from '@iota/converter';
 
-//import crypto from "simple-crypto-js";
+// Importing Crypto-JS Libraries for decrypting the JSON String using the given PASSPHRASE
 import CryptoAES from 'crypto-js/aes';
 import CryptoENC from 'crypto-js/enc-utf8';
 
-
-// Store Things
+// Importing Store.js for storing Container Data locally
 var store = require('store');
 
-
-// Getting the current Container Address
-/** 
-var ContainerCount = store.get("ContainerCount").count;
-var Str_ContainerCount = "container"  + ContainerCount;
-
-alert(Str_ContainerCount);
-var Str_ContainerCountPayload = "container"  + ContainerCount + "_payload";
-alert(Str_ContainerCountPayload);
-
-**/
-//var ContainerCount = store.get("ContainerCount").count;
-
-// Function to collect IOTA data from a given address
+// Function to collect IOTA data from a given address and decrypting it
 const fetchIOTA = async function() {
 
     try {
-      var containerName = "container" + store.get("count").count;
-      var address = store.get(containerName).address;
-      var passphrase = store.get(containerName).passphrase;
+      var containerID = "container" + store.get("count").count;
+      var containerCount = store.get("count").count;
+      var address = store.get(containerID).address;
+      var containerName = store.get(containerID).containerName;
+      var protocoll = store.get(containerID).protocoll;
+      var passphrase = store.get(containerID).passphrase;
       //var encryptor = new crypto(passphrase);
     } catch(e){
       alert("Didn't found any container. Maybe initializing?");
@@ -45,15 +34,14 @@ const fetchIOTA = async function() {
       msg = msg.map(tx => tx.signatureMessageFragment);
       msg = msg.join('');
 
-      /** 
+      
       var history = []; // Should contain the last 10 datapoints of one address!
       var begin = 0;
       var end = 2186;
       var datapoint = "";
       for (var i = 0; i < 10; i++) {
         datapoint = msg.slice(begin,end);
-        alert(datapoint)
-        datapoint = Converter.trytesToAscii(datapoint);
+        datapoint = Converter.trytesToAscii(datapoint).toString(CryptoENC);
         datapoint = datapoint.replace(/"([^"]+(?="))"/g, '$1');
         datapoint = CryptoAES.decrypt(datapoint, passphrase).toString(CryptoENC);
         datapoint = datapoint.toString().replace(/\\n/g, "\\n")  
@@ -68,11 +56,9 @@ const fetchIOTA = async function() {
         var datapoint = JSON.parse(datapoint);
 
         history.push(datapoint)
-        begin = 2186 + 3;
-        end = begin;
-        alert(i)
-      }
-      */
+        begin = end + 1;
+        end = begin + 2186;
+      }      
 
       msg = msg.slice(0,2186);
   
@@ -105,12 +91,12 @@ const fetchIOTA = async function() {
       //this.setState({container1: true});
 
       // Setting Store Object container<count>_payload
-      store.set(containerName, {payload:payload})
+      store.set(containerID, { count:containerCount, name:containerName, address:address, protocoll:protocoll, passphrase:passphrase, payload:payload, history:history })
 
-      alert(JSON.stringify(store.get(containerName).payload))
+      //alert(JSON.stringify(store.get(containerName).payload))
   
     } catch (error) {
-        alert("Ein Fehler wurde festgestellt: " + error);
+        alert("[fetchIOTA] Ein Fehler wurde festgestellt: " + error);
     }
   
   }

@@ -3,21 +3,122 @@ import { StyleSheet, View, Image, Text } from "react-native";
 
 import TempButton from "./TempButton";
 import HumidityButton from "./HumidityButton";
-import IOTA_Chart from "./Chart";
+
+import {
+  Label, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ReferenceArea,
+} from 'recharts';
 
 // Store Things
 var store = require('store');
+var data = [];
 
+//var payload = store.get(this.props.data).payload;
+//var history = store.get(this.props.data).history;
+try {
+var payload = store.get("container1").payload;
+var history = store.get("container1").history;
+
+// Data from Container History
+data = [
+  { name: history[9].dateTime, temp: parseInt(history[9].Temperature), hum: parseInt(history[9].Humidity), },
+  { name: history[8].dateTime, temp: parseInt(history[8].Temperature), hum: parseInt(history[8].Humidity), },
+  { name: history[7].dateTime, temp: parseInt(history[7].Temperature), hum: parseInt(history[7].Humidity), },
+  { name: history[6].dateTime, temp: parseInt(history[6].Temperature), hum: parseInt(history[6].Humidity), },
+  { name: history[5].dateTime, temp: parseInt(history[5].Temperature), hum: parseInt(history[5].Humidity), },
+  { name: history[4].dateTime, temp: parseInt(history[4].Temperature), hum: parseInt(history[4].Humidity), },
+  { name: history[3].dateTime, temp: parseInt(history[3].Temperature), hum: parseInt(history[3].Humidity), },
+  { name: history[2].dateTime, temp: parseInt(history[2].Temperature), hum: parseInt(history[2].Humidity), },
+  { name: history[1].dateTime, temp: parseInt(history[1].Temperature), hum: parseInt(history[1].Humidity), },
+  { name: history[0].dateTime, temp: parseInt(history[0].Temperature), hum: parseInt(history[0].Humidity), },
+];
+} catch(e){
+  alert("Didn't found any container. Maybe initializing?");
+}
+
+const initialState = {
+  data,
+  left: 'dataMin',
+  right: 'dataMax',
+  refAreaLeft: '',
+  refAreaRight: '',
+  top: '25',
+  bottom: '15',
+  top2: '100',
+  bottom2: '40',
+  animation: true,
+};
+
+const getAxisYDomain = (from, to, ref, offset) => {
+  const refData = data.slice(from - 1, to);
+  let [bottom, top] = [refData[0][ref], refData[0][ref]];
+  refData.forEach((d) => {
+    if (d[ref] > top) top = d[ref];
+    if (d[ref] < bottom) bottom = d[ref];
+  });
+
+  return [(bottom | 0) - offset, (top | 0) + offset];
+};
 
 class Popupwin extends React.Component {
-  constructor(props) {
+    static jsfiddleUrl = 'https://jsfiddle.net/alidingling/nhpemhgs/';
+  
+    constructor(props) {
     super(props);
-    this.state = { data: '' };
+    this.state = initialState;
+    }
+
+    zoom() {
+      let { refAreaLeft, refAreaRight, data } = this.state;
+      
+      if (refAreaLeft === refAreaRight || refAreaRight === '') {
+        this.setState(() => ({
+          refAreaLeft: '',
+          refAreaRight: '',
+        }));
+        return;
+      }
+      
+      // xAxis domain
+      if (refAreaLeft > refAreaRight) [refAreaLeft, refAreaRight] = [refAreaRight, refAreaLeft];
+      
+      // yAxis domain
+      const [bottom, top] = getAxisYDomain(refAreaLeft, refAreaRight, 'temp', 0);
+      const [bottom2, top2] = getAxisYDomain(refAreaLeft, refAreaRight, 'hum', 0);
+      
+      this.setState(() => ({
+        refAreaLeft: '',
+        refAreaRight: '',
+        data: data.slice(),
+        left: refAreaLeft,
+        right: refAreaRight,
+        bottom,
+        top,
+        bottom2,
+        top2,
+      }));
+      }
+      
+      zoomOut() {
+        const { data } = this.state;
+        this.setState(() => ({
+          data: data.slice(),
+          refAreaLeft: '',
+          refAreaRight: '',
+          left: 'dataMin',
+          right: 'dataMax',
+          top: 'dataMax+1',
+          bottom: 'dataMin',
+          top2: 'dataMax+50',
+          bottom2: 'dataMin+50',
+        }));
+      }
     
-  }
 //<IOTA_Chart style={styles.graph} />
   render() {
-    var payload = store.get(this.props.data).payload;
+    const {
+      data, barIndex, left, right, refAreaLeft, refAreaRight, top, bottom, top2, bottom2,
+    } = this.state;
+   
     return (
       <View style={styles.container}>
         <View style={styles.rect}>
@@ -42,9 +143,44 @@ class Popupwin extends React.Component {
             <HumidityButton style={styles.humidityButton} humidity={payload.Humidity}></HumidityButton>
           </View>
 
-          
           <View style={styles.graph}>
-            <Text>Graph hier einfügen...</Text>
+            <LineChart
+            width={800}
+            height={250}
+            data={data}
+            onMouseDown={e => this.setState({ refAreaLeft: e.activeLabel })}
+            onMouseMove={e => this.state.refAreaLeft && this.setState({ refAreaRight: e.activeLabel })}
+            onMouseUp={this.zoom.bind(this)}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                allowDataOverflow
+                dataKey="name"
+                domain={[left, right]}
+                type="category"
+              />
+              <YAxis
+                allowDataOverflow
+                domain={[15, 25]}
+                type="number"
+                yAxisId="1"
+              />
+              <YAxis
+                orientation="right"
+                allowDataOverflow
+                domain={[40, 100]}
+                type="number"
+                yAxisId="2"
+              />
+              <Tooltip />
+              <Line yAxisId="1" type="natural" dataKey="temp" stroke="#8884d8" animationDuration={300} />
+              <Line yAxisId="2" type="natural" dataKey="hum" stroke="#82ca9d" animationDuration={300} />
+
+              {
+                (refAreaLeft && refAreaRight) ? (
+                  <ReferenceArea yAxisId="1" x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3} />) : null
+                }
+            </LineChart>
           </View>
 
           <Image
@@ -156,7 +292,6 @@ const styles = StyleSheet.create({
   graph: {
     width: 720,
     height: 250,
-    backgroundColor: "#E6E6E6",
     marginTop: 35,
     marginLeft: 100
   },
