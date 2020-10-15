@@ -58,6 +58,7 @@ class Home extends React.Component {
   flushData() {
     store.clearAll();
     store.set("count", { count: 0 })
+    window.location.reload(false);
   }
 
   /**

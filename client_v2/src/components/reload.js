@@ -11,14 +11,14 @@ function Reload(props) {
           <Ellipse
             stroke="rgba(230, 230, 230,1)"
             strokeWidth={0}
-            fill="rgba(1,66,137,1)"
+            fill="rgba(179,30,0,1)"
             cx={42}
             cy={42}
             rx={42}
             ry={42}
           ></Ellipse>
         </Svg>
-        <Icon name="package" style={styles.icon}></Icon>
+        <Icon name="minus-circle" style={styles.icon}></Icon>
       </View>
     </View>
   );
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   icon: {
     position: "absolute",
     color: "rgba(255,255,255,1)",
-    fontSize: 40,
+    fontSize: 38,
     left: 10,
     top: 8
   },

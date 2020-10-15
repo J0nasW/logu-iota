@@ -1,133 +1,117 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import TempButton from "./TempButton";
 import HumidityButton from "./HumidityButton";
+import TimeButton from "./timeButton";
 
 import {
-  Label, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ReferenceArea,
+  Label, AreaChart, Area, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ReferenceArea,
 } from 'recharts';
 
 // Store Things
 var store = require('store');
-var data = [];
 
-//var payload = store.get(this.props.data).payload;
-//var history = store.get(this.props.data).history;
-try {
-var payload = store.get("container1").payload;
-var history = store.get("container1").history;
+// Mapbox Things
+/**
+import MapboxGL from '@mapbox/react-native-mapbox-gl';
+MapboxGL.accessToken = 'pk.eyJ1Ijoiam9uYXN3aSIsImEiOiJja2c5czZ5bWwwMDhsMnhsbHNiczRubHpoIn0.4ES6B_UurMlwKpwVEvWjCw';
+const coordinates = [[53.529444, 9.921735]];
+ */
 
-// Data from Container History
-data = [
-  { name: history[9].dateTime, temp: parseInt(history[9].Temperature), hum: parseInt(history[9].Humidity), },
-  { name: history[8].dateTime, temp: parseInt(history[8].Temperature), hum: parseInt(history[8].Humidity), },
-  { name: history[7].dateTime, temp: parseInt(history[7].Temperature), hum: parseInt(history[7].Humidity), },
-  { name: history[6].dateTime, temp: parseInt(history[6].Temperature), hum: parseInt(history[6].Humidity), },
-  { name: history[5].dateTime, temp: parseInt(history[5].Temperature), hum: parseInt(history[5].Humidity), },
-  { name: history[4].dateTime, temp: parseInt(history[4].Temperature), hum: parseInt(history[4].Humidity), },
-  { name: history[3].dateTime, temp: parseInt(history[3].Temperature), hum: parseInt(history[3].Humidity), },
-  { name: history[2].dateTime, temp: parseInt(history[2].Temperature), hum: parseInt(history[2].Humidity), },
-  { name: history[1].dateTime, temp: parseInt(history[1].Temperature), hum: parseInt(history[1].Humidity), },
-  { name: history[0].dateTime, temp: parseInt(history[0].Temperature), hum: parseInt(history[0].Humidity), },
-];
-} catch(e){
-  alert("Didn't found any container. Maybe initializing?");
+const init = (history) => {
+  var data = [
+    { name: history[9].dateTime, temp: parseInt(history[9].Temperature), hum: parseInt(history[9].Humidity), },
+    { name: history[8].dateTime, temp: parseInt(history[8].Temperature), hum: parseInt(history[8].Humidity), },
+    { name: history[7].dateTime, temp: parseInt(history[7].Temperature), hum: parseInt(history[7].Humidity), },
+    { name: history[6].dateTime, temp: parseInt(history[6].Temperature), hum: parseInt(history[6].Humidity), },
+    { name: history[5].dateTime, temp: parseInt(history[5].Temperature), hum: parseInt(history[5].Humidity), },
+    { name: history[4].dateTime, temp: parseInt(history[4].Temperature), hum: parseInt(history[4].Humidity), },
+    { name: history[3].dateTime, temp: parseInt(history[3].Temperature), hum: parseInt(history[3].Humidity), },
+    { name: history[2].dateTime, temp: parseInt(history[2].Temperature), hum: parseInt(history[2].Humidity), },
+    { name: history[1].dateTime, temp: parseInt(history[1].Temperature), hum: parseInt(history[1].Humidity), },
+    { name: history[0].dateTime, temp: parseInt(history[0].Temperature), hum: parseInt(history[0].Humidity), },
+  ];
+  return data;
 }
-
-const initialState = {
-  data,
-  left: 'dataMin',
-  right: 'dataMax',
-  refAreaLeft: '',
-  refAreaRight: '',
-  top: '25',
-  bottom: '15',
-  top2: '100',
-  bottom2: '40',
-  animation: true,
-};
-
-const getAxisYDomain = (from, to, ref, offset) => {
-  const refData = data.slice(from - 1, to);
-  let [bottom, top] = [refData[0][ref], refData[0][ref]];
-  refData.forEach((d) => {
-    if (d[ref] > top) top = d[ref];
-    if (d[ref] < bottom) bottom = d[ref];
-  });
-
-  return [(bottom | 0) - offset, (top | 0) + offset];
-};
 
 class Popupwin extends React.Component {
     static jsfiddleUrl = 'https://jsfiddle.net/alidingling/nhpemhgs/';
-  
+
     constructor(props) {
     super(props);
-    this.state = initialState;
+    this.state = {
+      data: '',
+      left: 'dataMin',
+      right: 'dataMax',
+      refAreaLeft: '',
+      refAreaRight: '',
+      top: '23',
+      bottom: '18',
+      top2: '80',
+      bottom2: '50',
+      animation: true,
+      //coordinates: coordinates
+    };
     }
 
-    zoom() {
-      let { refAreaLeft, refAreaRight, data } = this.state;
-      
-      if (refAreaLeft === refAreaRight || refAreaRight === '') {
-        this.setState(() => ({
-          refAreaLeft: '',
-          refAreaRight: '',
-        }));
-        return;
+    /** 
+    renderAnnotation (counter) {
+      const id = `pointAnnotation${counter}`;
+      const coordinate = this.state.coordinates[counter];
+      const title = `Longitude: ${this.state.coordinates[counter][0]} Latitude: ${this.state.coordinates[counter][1]}`;
+  
+      return (
+        <MapboxGL.PointAnnotation
+          key={id}
+          id={id}
+          title='Test'
+          coordinate={coordinate}>
+  
+          <Image
+          source={require('../assets/images/marker.png')}
+          style={{
+            flex: 1,
+            resizeMode: 'contain',
+            width: 25,
+            height: 25
+            }}/>
+        </MapboxGL.PointAnnotation>
+      );
+    }
+
+    renderAnnotations () {
+      const items = [];
+  
+      for (let i = 0; i < this.state.coordinates.length; i++) {
+        items.push(this.renderAnnotation(i));
       }
-      
-      // xAxis domain
-      if (refAreaLeft > refAreaRight) [refAreaLeft, refAreaRight] = [refAreaRight, refAreaLeft];
-      
-      // yAxis domain
-      const [bottom, top] = getAxisYDomain(refAreaLeft, refAreaRight, 'temp', 0);
-      const [bottom2, top2] = getAxisYDomain(refAreaLeft, refAreaRight, 'hum', 0);
-      
-      this.setState(() => ({
-        refAreaLeft: '',
-        refAreaRight: '',
-        data: data.slice(),
-        left: refAreaLeft,
-        right: refAreaRight,
-        bottom,
-        top,
-        bottom2,
-        top2,
-      }));
-      }
-      
-      zoomOut() {
-        const { data } = this.state;
-        this.setState(() => ({
-          data: data.slice(),
-          refAreaLeft: '',
-          refAreaRight: '',
-          left: 'dataMin',
-          right: 'dataMax',
-          top: 'dataMax+1',
-          bottom: 'dataMin',
-          top2: 'dataMax+50',
-          bottom2: 'dataMin+50',
-        }));
-      }
+  
+      return items;
+    }
+    */
     
 //<IOTA_Chart style={styles.graph} />
   render() {
+    
+    var payload = store.get(this.props.data).payload;
+    var history = store.get(this.props.data).history;
+
+    var data = init(history)
+    
     const {
-      data, barIndex, left, right, refAreaLeft, refAreaRight, top, bottom, top2, bottom2,
+      barIndex, left, right, refAreaLeft, refAreaRight, top, bottom, top2, bottom2,
     } = this.state;
-   
+    
+  
     return (
       <View style={styles.container}>
         <View style={styles.rect}>
           <View style={styles.Row1}>
-            <Image
-              source={require("../assets/images/Maersk1.png")}
-              resizeMode="contain"
-              style={styles.company}
-            ></Image>
+            <View style={styles.company}>
+              <Icon name="question" style={styles.icon}></Icon>
+            </View>
             <View style={styles.Row1Column1}>
               <Text style={styles.container_heading}>Container</Text>
               <Text style={styles.container_name}>{payload.container}</Text>
@@ -141,17 +125,25 @@ class Popupwin extends React.Component {
           <View style={styles.Row2}>
             <TempButton style={styles.tempButton} temp={payload.Temperature}></TempButton>
             <HumidityButton style={styles.humidityButton} humidity={payload.Humidity}></HumidityButton>
+            <TimeButton style={styles.timeButton} dateTime={payload.dateTime}></TimeButton>
           </View>
 
           <View style={styles.graph}>
-            <LineChart
+            <AreaChart
             width={800}
             height={250}
             data={data}
-            onMouseDown={e => this.setState({ refAreaLeft: e.activeLabel })}
-            onMouseMove={e => this.state.refAreaLeft && this.setState({ refAreaRight: e.activeLabel })}
-            onMouseUp={this.zoom.bind(this)}
             >
+              <defs>
+                <linearGradient id="colorTemp" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#2D9CDB" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#2D9CDB" stopOpacity={0}/>
+                </linearGradient>
+                <linearGradient id="colorHum" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#008C95" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#008C95" stopOpacity={0}/>
+                </linearGradient>
+              </defs>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 allowDataOverflow
@@ -161,28 +153,32 @@ class Popupwin extends React.Component {
               />
               <YAxis
                 allowDataOverflow
-                domain={[15, 25]}
+                domain={[16, 22]}
                 type="number"
                 yAxisId="1"
               />
               <YAxis
                 orientation="right"
                 allowDataOverflow
-                domain={[40, 100]}
+                domain={[50, 70]}
                 type="number"
                 yAxisId="2"
               />
               <Tooltip />
-              <Line yAxisId="1" type="natural" dataKey="temp" stroke="#8884d8" animationDuration={300} />
-              <Line yAxisId="2" type="natural" dataKey="hum" stroke="#82ca9d" animationDuration={300} />
+              <Area yAxisId="1" type="monotone" dataKey="temp" stroke="#2D9CDB" animationDuration={300} fillOpacity={1} fill="url(#colorTemp)" />
+              <Area yAxisId="2" type="monotone" dataKey="hum" stroke="#008C95" animationDuration={300} fillOpacity={1} fill="url(#colorHum)" />
 
               {
                 (refAreaLeft && refAreaRight) ? (
                   <ReferenceArea yAxisId="1" x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3} />) : null
                 }
-            </LineChart>
+            </AreaChart>
           </View>
+          
 
+          
+
+          
           <Image
             source={require("../assets/images/001-lettuce.png")}
             resizeMode="contain"
@@ -219,6 +215,43 @@ class Popupwin extends React.Component {
     );}
 }
 
+/**
+<View style={styles.Row35}>
+            <View style={styles.Row35Column1}>
+              <Image
+                source={require("../assets/images/001-lettuce.png")}
+                resizeMode="contain"
+                style={styles.image_lettuce}
+              ></Image>
+              <View style={styles.Row3}>
+                <Image
+                  source={require("../assets/images/003-snowflake.png")}
+                  resizeMode="contain"
+                  style={styles.image_frozen}
+                ></Image>
+                <View style={styles.Content_Stack}>
+                  <Text style={styles.blattsalat}>{payload.content}</Text>
+                  <Text style={styles.gefroren}>gefroren</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.Row35Column2}>
+              <View style={{flex: 1}}>
+                <MapboxGL.MapView
+                  ref={(c) => this._map = c}
+                  style={{flex: 1}}
+                  zoomLevel={11}
+                  showUserLocation={true}
+                  userTrackingMode={1}
+                  centerCoordinate={this.state.coordinates[0]}>
+                    {this.renderAnnotations()}
+                </MapboxGL.MapView>
+              </View>
+            </View>
+          </View>
+ */
+
 const styles = StyleSheet.create({
   container: {},
   rect: {
@@ -231,8 +264,19 @@ const styles = StyleSheet.create({
     marginLeft: 40,
   },
     company: {
-      width: 80,
-      height: 80
+      width: 75,
+      height: 75,
+      borderWidth: 3,
+      borderColor: "rgba(155,155,155,1)",
+      borderRadius: 25
+    },
+    icon: {
+      color: "rgba(128,128,128,1)",
+      fontSize: 50,
+      height: 50,
+      width: 30,
+      marginTop: 7,
+      marginLeft: 20
     },
 
     Row1Column1: {
@@ -279,13 +323,17 @@ const styles = StyleSheet.create({
   },
     tempButton: {
       height: 60,
-      width: 280,
-      marginRight: 20
+      width: 200,
+      marginRight: 10
     },
     humidityButton: {
       height: 60,
-      width: 280,
-      marginLeft: 20
+      width: 200,
+      marginRight: 10
+    },
+    timeButton: {
+      height: 60,
+      width: 200,
     },
 
 
@@ -293,7 +341,10 @@ const styles = StyleSheet.create({
     width: 720,
     height: 250,
     marginTop: 35,
-    marginLeft: 100
+    marginLeft: 100,
+    fontFamily: "roboto-regular",
+    color: "rgba(119,119,119,1)",
+    fontSize: 14,
   },
 
   Row3: {
@@ -331,6 +382,22 @@ const styles = StyleSheet.create({
       fontSize: 20,
     },
   
+  Row35: {
+      height: 300,
+      flexDirection: "row",
+      marginTop: 10,
+      alignSelf: "center"
+    },
+      Row35Column1: {
+        width: 200,
+        marginLeft: 10
+      },
+        
+      Row35Column2: {
+        width: 600,
+        marginRight: 10
+      },
+
   Row4: {
     height: 200,
     flexDirection: "row",

@@ -29,7 +29,7 @@ const provider = 'https://nodes.comnet.thetangle.org:443' //Using the public DEV
 const depth = 3 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
 const securityLevel = 2 //Defining the security level (see https://docs.iota.org/docs/getting-started/0.1/clients/security-levels)
 const minWeight = 10 //Optional minimum number of trailing zeros in transaction hash. This is used by attachToTangle function to search for a valid nonce. Currently is 14 on mainnet & spamnnet and 9 on most other devnets. Null value will set minWeightMagnitude to 9
-const TIMEINTERVAL  = 30; // In seconds.
+const TIMEINTERVAL  = 120; // In seconds.
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 // FUNCTIONS -----------------------------------------------------------------------------------------------------------------------------------
@@ -74,13 +74,15 @@ const generateJSON = function() {
     const temperature = sensorResult.temperature.toFixed(1);
     const humidity = sensorResult.humidity.toFixed(1);
     const dateTime = moment().utc().format('DD/MM/YYYY hh:mm:ss');
+    const lat = "53.529444";
+    const lon = "9.921735";
     const container = "MWBNB564534884a";
     const booking_nr = "35646794533";
     const departure = "HAM";
     const arrival = "ROT";
     const content = "Blattsalat";
     const freeze = "ja";
-    var json = {"Temperature": temperature, "Humidity": humidity, "dateTime": dateTime, "container": container, "booking_nr": booking_nr, "departure": departure, "arrival": arrival, "content": content, "freeze": freeze};
+    var json = {"Temperature": temperature, "Humidity": humidity, "dateTime": dateTime, "lat":lat, "lon":lon, "container": container, "booking_nr": booking_nr, "departure": departure, "arrival": arrival, "content": content, "freeze": freeze};
     var encrypted_json = CryptoAES.encrypt(JSON.stringify(json), PASSPHRASE).toString();
     console.log(encrypted_json);
     return encrypted_json;

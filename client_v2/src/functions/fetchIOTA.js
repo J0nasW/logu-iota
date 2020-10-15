@@ -21,7 +21,7 @@ const fetchIOTA = async function() {
       var passphrase = store.get(containerID).passphrase;
       //var encryptor = new crypto(passphrase);
     } catch(e){
-      alert("Didn't found any container. Maybe initializing?");
+      alert("[fetchIOTA] Didn't found any container. Maybe initializing?");
     }
 
     var iota = IotaProvider.composeAPI({
@@ -96,7 +96,7 @@ const fetchIOTA = async function() {
       //alert(JSON.stringify(store.get(containerName).payload))
   
     } catch (error) {
-        alert("[fetchIOTA] Ein Fehler wurde festgestellt: " + error);
+        alert("[fetchIOTA] An Error occured: " + error);
     }
   
   }

@@ -40,9 +40,9 @@ class HumidityButton extends React.Component{
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {marginRight: 5},
   rect2: {
-    width: 300,
+    width: 250,
     height: 60,
     backgroundColor: "rgba(0, 140, 149, 1)",
     borderRadius: 100
