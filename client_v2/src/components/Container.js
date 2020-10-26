@@ -1,15 +1,14 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image, Text, Dimensions } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 function Container(props) {
   return (
     <View style={[styles.container, props.style]}>
       <View style={styles.rect}>
-            <Image
-              source={require("../assets/images/Maersk.png")}
-              resizeMode="contain"
-              style={styles.image}
-            ></Image>
+            <View style={styles.company}>
+              <Icon name="question" style={styles.icon}></Icon>
+            </View>
 
             <View style={styles.Column1}>
               <Text style={styles.container}>Container</Text>
@@ -69,6 +68,22 @@ const styles = StyleSheet.create({
     alignItems:'center',
     padding: 20,
     zIndex: 2,
+  },
+  company: {
+    width: 75,
+    height: 75,
+    borderWidth: 3,
+    borderColor: "rgba(155,155,155,1)",
+    borderRadius: 25,
+    marginLeft: 25
+  },
+  icon: {
+    color: "rgba(128,128,128,1)",
+    fontSize: 50,
+    height: 50,
+    width: 30,
+    marginTop: 7,
+    marginLeft: 20
   },
 
     image: {

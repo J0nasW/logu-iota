@@ -3,11 +3,11 @@ import { StyleSheet, View, Text } from "react-native";
 import Svg, { Ellipse } from "react-native-svg";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-class TempButton extends React.Component{
+class TimeButton extends React.Component{
 
   constructor(props) {
     super(props);
-    this.state = { temp: '' };
+    this.state = { dateTime: '' };
   }
 
   render() {
@@ -30,8 +30,8 @@ class TempButton extends React.Component{
             <Icon name="temperature-celsius" style={styles.icon}></Icon>
           </View>
           <View style={styles.liveTemperaturColumn}>
-            <Text style={styles.liveTemperatur}>LIVE: Temperatur</Text>
-            <Text style={styles.liveTemperatur1}>{this.props.temp} °C</Text>
+            <Text style={styles.liveTemperatur}>LIVE: Zeit</Text>
+            <Text style={styles.liveTemperatur1}>{this.props.dateTime}</Text>
           </View>
         </View>
       </View>
@@ -42,10 +42,10 @@ class TempButton extends React.Component{
 const styles = StyleSheet.create({
   container: {marginRight: 5},
   rect2: {
-    width: 230,
+    width: 300,
     height: 60,
-    backgroundColor: "rgba(45,156,219,1)",
-    borderRadius: 100,
+    backgroundColor: "rgba(255,159,15,1)",
+    borderRadius: 100
   },
   ellipse: {
     top: 0,
@@ -74,12 +74,12 @@ const styles = StyleSheet.create({
   liveTemperatur1: {
     fontFamily: "roboto-700",
     color: "rgba(255,255,255,1)",
-    fontSize: 25
+    fontSize: 20
   },
   liveTemperaturColumn: {
-    width: 107,
+    width: 250,
     marginLeft: 11,
-    marginTop: 7,
+    marginTop: 10,
     marginBottom: 6
   },
   ellipseStackRow: {
@@ -89,4 +89,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default TempButton;
+export default TimeButton;
