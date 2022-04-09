@@ -21,7 +21,7 @@
     "gps-module": "^1.0.0",
     "hybrid-crypto-js": "^0.2.4",
     "keygenerator": "^1.0.4",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "node-dht-sensor": "0.4.2",
     "node-gps": "0.0.1",
     "readline-sync": "^1.4.10",
