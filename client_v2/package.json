@@ -13,7 +13,7 @@
     "bootstrap": "^4.5.2",
     "crypto-js": "^3.3.0",
     "expo": "^39.0.3",
-    "expo-cli": "^3.27.14",
+    "expo-cli": "^6.0.6",
     "expo-font": "~8.3.0",
     "hybrid-crypto-js": "^0.2.4",
     "lodash": "~4.17.20",
